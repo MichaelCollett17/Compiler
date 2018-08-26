@@ -1,0 +1,21 @@
+Lexeme      Token     Attribute
+program     PROG      NULL
+var
+array
+of
+integer
+real
+function
+procedure
+begin
+end
+if
+then
+else
+while
+do
+or
+div
+mod
+and
+not
