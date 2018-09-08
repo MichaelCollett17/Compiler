@@ -1,2 +1,2 @@
-makelexical: LexicalAnalyzer.c ./Machines/idres.c ./Machines/whitespace.c
-	gcc -o Lex LexicalAnalyzer.c ./Machines/idres.c ./Machines/whitespace.c
+makelexical: LexicalAnalyzer.c ./Machines/idres.c ./Machines/whitespace.c ./DataStructures/LinkedList.c
+	gcc -o Lex LexicalAnalyzer.c ./Machines/idres.c ./Machines/whitespace.c ./DataStructures/LinkedList.c

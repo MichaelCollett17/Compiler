@@ -27,7 +27,8 @@ struct machOut idres(int b, int end, char *buff, FILE *listFile){
   lexeme[f-b] = '\0';
   if((f-b) > 10){
     struct machOut out = {f, IDTOOLONG, lexeme};//when there is an error f-b will denote the lexeme size
-    //PRINT to listFile
+    fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "IDTOOLONG", lexeme);
+    printf("%-11s%-35s%s\n", "LEXERR:", "IDTOOLONG", lexeme);
     return out;
   }
   struct machOut out = {f, 0, lexeme};

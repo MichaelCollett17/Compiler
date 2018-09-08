@@ -12,6 +12,8 @@ int stringLength(char *s){
   return n;
 }
 
+
+
 //malloc dynamically allocate --read more
 //realloc reallocate variable size
 //calloc and pragma
@@ -33,6 +35,7 @@ int machines(char *buff, FILE *listFile, int lineNum){
       else{
         //add token, attr, lexeme, and line no. to linked list
       }
+    break;
     }
   return 0;
 }
@@ -42,7 +45,7 @@ char* loadBuffer(char *buff, FILE *fp){
   return fgets(buff, 72, (FILE*)fp);
 }
 
-//
+//Prints next line into Listing file
 int printBuffer(char *buff, FILE *listFile, int lineNum){
   return fprintf(listFile, "%d.\t%s", lineNum, buff);
 }
