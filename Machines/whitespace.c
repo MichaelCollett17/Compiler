@@ -1,5 +1,5 @@
 #include <ctype.h>
-int whitespace(int b, int end, char *buff){
+int whitespace(int b, char *buff){
   while(isspace(buff[b])){
     b++;
   }
