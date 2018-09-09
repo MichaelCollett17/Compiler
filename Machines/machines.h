@@ -10,6 +10,8 @@ struct machOut
   int b;
   int error;
   char *lexeme;//instead I should pass a pointer to the first address and iterate to end
+  int tokenType;
+  int attribute;
 };
 
 struct machOut idres(int b, int end, char *buff, FILE *listFile);

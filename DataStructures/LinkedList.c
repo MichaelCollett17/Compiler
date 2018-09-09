@@ -1,7 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "LinkedList.h"
-void insert(int lineNo, char *lexeme, int tokenType, char *tokenString, int attribute) {
+
+struct node *head = NULL;
+struct node *current = NULL;
+
+void insert(int lineNo, char *lexeme, int tokenType, int attribute) {
    //create a link
    struct node *link = (struct node*) malloc(sizeof(struct node));
 
@@ -9,7 +13,6 @@ void insert(int lineNo, char *lexeme, int tokenType, char *tokenString, int attr
    link->lineNo = lineNo;
    link->lexeme = lexeme;
    link->tokenType = tokenType;
-   link->tokenString = tokenString;
    link->attribute = attribute;
 
    //point it to old first node
@@ -22,6 +25,7 @@ void insert(int lineNo, char *lexeme, int tokenType, char *tokenString, int attr
 void printList() {
   struct node *ptr = head;
   while(ptr != NULL){
-    printf("%d\t%d\t%d", ptr->lineNo,ptr->tokenType,ptr->attribute);
+    printf("%d\t%d\t%d\n", ptr->lineNo,ptr->tokenType,ptr->attribute);
+    ptr = ptr -> next;
   }
 }

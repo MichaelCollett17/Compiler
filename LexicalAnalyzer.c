@@ -4,6 +4,7 @@
 
 #include "tokens.h"
 #include "./Machines/machines.h"
+#include "./DataStructures/LinkedList.h"
 
 int stringLength(char *s){
   int n;
@@ -12,7 +13,22 @@ int stringLength(char *s){
   return n;
 }
 
-
+int processMachineOutput(struct machOut out, int lineNum, int b){
+  if(out.b!=BLOCK){
+    b = out.b;
+    if(out.error>99){
+      insert(lineNum, out.lexeme, LEXERR, out.error);
+      printList();
+    }
+    else{
+      insert(lineNum, out.lexeme, out.tokenType, out.attribute);
+    }
+    return b;
+  }
+  else{
+    return b;
+  }
+}
 
 //malloc dynamically allocate --read more
 //realloc reallocate variable size
@@ -25,18 +41,9 @@ int machines(char *buff, FILE *listFile, int lineNum){
   while(b<end){
     b = whitespace(b, buff);
     out = idres(b, end, buff, listFile);
-    //update b, check error, or add to linked list can I port this to a function! I think so
-    if(out.b!=BLOCK){
-      b = out.b;
-      if(out.error>99){
-        //add token, attr, lexeme, and line no. to linked list
-      }
-    }
-      else{
-        //add token, attr, lexeme, and line no. to linked list
-      }
+    b = processMachineOutput(out, lineNum, b);
     break;
-    }
+  }
   return 0;
 }
 
