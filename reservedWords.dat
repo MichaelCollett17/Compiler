@@ -1,10 +1,9 @@
-Lexeme  Token Attribute
-program 30  NULL
-var 31  NULL
-array 32  NULL
-of  33  NULL
-integer 34  NULL
-real  35  NULL
+program 30  0
+var 31  0
+array 32  0
+of  33  0
+integer 34  0
+real  35  
 function  36
 procedure 37
 begin 38  70
@@ -18,4 +17,4 @@ or  41  77
 div 41  78
 mod 41  79
 and 41  80
-not 42  NULL
+not 42  0

@@ -5,6 +5,7 @@
 #include "tokens.h"
 #include "./Machines/machines.h"
 #include "./DataStructures/LinkedList.h"
+#include "reservedWords.h"
 
 int stringLength(char *s){
   int n;
@@ -66,6 +67,7 @@ int main()
 
   rfp = fopen("./PascalExample.pas", "r");
   listFile = fopen("./ListingFile.txt", "w+");
+  loadReservedWords();
 
   eof = loadBuffer(buff,rfp);
   int lineNum = 1;
