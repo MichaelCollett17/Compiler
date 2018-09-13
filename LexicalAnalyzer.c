@@ -19,7 +19,6 @@ int processMachineOutput(struct machOut out, int lineNum, int b){
     b = out.b;
     if(out.error>99){
       insert(lineNum, out.lexeme, LEXERR, out.error);
-      printList();
     }
     else{
       insert(lineNum, out.lexeme, out.tokenType, out.attribute);
@@ -65,7 +64,8 @@ int main()
   FILE *listFile;
   char buff[72];
 
-  rfp = fopen("./PascalExample.pas", "r");
+  //rfp = fopen("./PascalExample.pas", "r");
+  rfp = fopen("./Testing.pas", "r");
   listFile = fopen("./ListingFile.txt", "w+");
   loadReservedWords();
 
@@ -76,6 +76,7 @@ int main()
     machines(buff, listFile, lineNum);
     eof = loadBuffer(buff,rfp);
     lineNum++;
+    //break;
   }
 
   fclose(rfp);

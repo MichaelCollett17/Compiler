@@ -9,5 +9,6 @@ struct resWord{
 };
 
 void loadReservedWords();
+struct resWord getTokAndAtt(char *lexeme);
 
 #endif

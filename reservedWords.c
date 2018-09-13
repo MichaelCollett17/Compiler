@@ -4,7 +4,7 @@
 #include "reservedWords.h"
 
 struct resWord *resWordHead = NULL;
-struct resWord *resWordCurrent = NULL;
+struct resWord resWordNull = {"",-1,-1};
 
 void insertResWord(char *lexResWord, int tokenResWord, int attributeResWord) {
    struct resWord *link = (struct resWord*) malloc(sizeof(struct resWord));
@@ -23,13 +23,19 @@ void printResWordList() {
   }
 }
 
+//strcmp returns 0 if they're the same
 struct resWord getTokAndAtt(char *lexeme){
   struct resWord *ptr = resWordHead;
   while(ptr != NULL){
-    if(ptr->lexResWord == lexeme){
-      return *ptr;
+    if(strcmp(ptr->lexResWord, lexeme)==0){
+     return *ptr;
     }
-    ptr = ptr -> nextResWord;
+    if(ptr -> nextResWord){
+      ptr = ptr -> nextResWord;
+    }
+    else{
+      return resWordNull;
+    }
   }
   return *ptr;
 }
