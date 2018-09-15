@@ -55,7 +55,11 @@ int machines(char *buff, FILE *listFile, int lineNum){
         continue;
     }
     //nums
-
+    out = number(b, end, buff, listFile);
+    if(out.b!=BLOCK){
+        b = processMachineOutput(out, lineNum, b);
+        continue;
+    }
     //relops
     out = relop(b, end, buff, listFile);
     if(out.b!=BLOCK){

@@ -15,5 +15,6 @@ int whitespace(int b, char *buff);
 struct machOut idres(int b, int end, char *buff, FILE *listFile);
 struct machOut catchall(int b, int end, char *buff, FILE *listFile);
 struct machOut relop(int b, int end, char *buff, FILE *listFile);
+struct machOut number(int b, int end, char *buff, FILE *listFile);
 
 #endif

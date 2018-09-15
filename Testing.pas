@@ -1,6 +1,4 @@
-<= <> < = >= >
-+ - * /
-Jump Jump
-Ellie Hummel
-
-How you
+123
+234.5
+322.5E3
+423.5E+21

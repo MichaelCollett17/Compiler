@@ -12,6 +12,9 @@
 #define RELOP 7
 #define MULOP 8
 #define ADDOP 9
+#define INT 10
+#define SREAL 11
+#define LREAL 12
 //Attributes
 #define LPAR 81
 #define RPAR 82
