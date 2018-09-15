@@ -1,2 +1,2 @@
-1.	Jump around and Jump
-2.	again Jump
+1.	Jump around &^and Jump
+2.	again %Jum$p := jump#123

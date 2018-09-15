@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #include "tokens.h"
 #include "./Machines/machines.h"
@@ -53,6 +54,11 @@ int machines(char *buff, FILE *listFile, int lineNum){
         b = processMachineOutput(out, lineNum, b);
         continue;
     }
+    char *lexeme = malloc(2*sizeof(char));
+    lexeme[0] = buff[b];
+    lexeme[1] = '\0';
+    struct machOut unrecog = {b+1, UNRECOGSYMB,lexeme};
+    b = processMachineOutput(unrecog, lineNum, b);
   }
   return 0;
 }

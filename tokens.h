@@ -20,4 +20,5 @@
 //Errors
 #define LEXERR 99
 #define IDTOOLONG 100
+#define UNRECOGSYMB 101
 #endif
