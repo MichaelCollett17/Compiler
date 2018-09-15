@@ -101,8 +101,41 @@ struct machOut catchall(int b, int end, char *buff, FILE *listFile){
         struct machOut out = {f, 0, lexeme, GROUPING, RBRACK};
         return out;
     }
+    else if(buff[f]== '+'){
+      f++;
+      char *lexeme = malloc((f-b+1)*sizeof(char));
+      const char* from = buff;
+      strncpy(lexeme, from+b, f-b);
+      lexeme[f-b] = '\0';
+      struct machOut out = {f, 0, lexeme, ADDOP, ADD};
+      return out;
+    }
+    else if(buff[f]== '-'){
+      f++;
+      char *lexeme = malloc((f-b+1)*sizeof(char));
+      const char* from = buff;
+      strncpy(lexeme, from+b, f-b);
+      lexeme[f-b] = '\0';
+      struct machOut out = {f, 0, lexeme, ADDOP, SUB};
+      return out;
+    }
     else if(buff[f] == '*'){
-
+      f++;
+      char *lexeme = malloc((f-b+1)*sizeof(char));
+      const char* from = buff;
+      strncpy(lexeme, from+b, f-b);
+      lexeme[f-b] = '\0';
+      struct machOut out = {f, 0, lexeme, MULOP, MULT};
+      return out;
+    }
+    else if(buff[f]== '/'){
+      f++;
+      char *lexeme = malloc((f-b+1)*sizeof(char));
+      const char* from = buff;
+      strncpy(lexeme, from+b, f-b);
+      lexeme[f-b] = '\0';
+      struct machOut out = {f, 0, lexeme, MULOP, DIV};
+      return out;
     }
     else{
         struct machOut block = {BLOCK, -1, "\0", -1, -1};
