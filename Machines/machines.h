@@ -7,12 +7,13 @@ struct machOut
 {
   int b;
   int error;
-  char *lexeme;//instead I should pass a pointer to the first address and iterate to end
+  char *lexeme;
   int tokenType;
   int attribute;
 };
 int whitespace(int b, char *buff);
 struct machOut idres(int b, int end, char *buff, FILE *listFile);
 struct machOut catchall(int b, int end, char *buff, FILE *listFile);
+struct machOut relop(int b, int end, char *buff, FILE *listFile);
 
 #endif

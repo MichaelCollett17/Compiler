@@ -9,6 +9,9 @@
 #define PUNCTUATION 4
 #define ARRAY 5
 #define TYPE 6
+#define RELOP 7
+#define MULOP 8
+#define ADDOP 9
 //Attributes
 #define LPAR 81
 #define RPAR 82
@@ -17,6 +20,16 @@
 #define COMMA 85
 #define SEMICOLON 86
 #define PERIOD 87
+#define LTEQ 88
+#define NEQ 89
+#define LT 90
+#define EQ 91
+#define GTEQ 92
+#define GT 93
+#define MULT 94
+#define DIV 95
+#define ADD 96
+#define SUB 97
 //Errors
 #define LEXERR 99
 #define IDTOOLONG 100

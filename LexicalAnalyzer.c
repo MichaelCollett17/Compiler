@@ -54,6 +54,15 @@ int machines(char *buff, FILE *listFile, int lineNum){
         b = processMachineOutput(out, lineNum, b);
         continue;
     }
+    //nums
+
+    //relops
+    out = relop(b, end, buff, listFile);
+    if(out.b!=BLOCK){
+        b = processMachineOutput(out, lineNum, b);
+        continue;
+    }
+    //Unrecognized symbol
     char *lexeme = malloc(2*sizeof(char));
     lexeme[0] = buff[b];
     lexeme[1] = '\0';

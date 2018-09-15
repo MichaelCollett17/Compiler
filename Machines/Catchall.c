@@ -101,6 +101,9 @@ struct machOut catchall(int b, int end, char *buff, FILE *listFile){
         struct machOut out = {f, 0, lexeme, GROUPING, RBRACK};
         return out;
     }
+    else if(buff[f] == '*'){
+
+    }
     else{
         struct machOut block = {BLOCK, -1, "\0", -1, -1};
         return block;
