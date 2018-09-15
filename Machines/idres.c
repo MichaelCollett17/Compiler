@@ -38,10 +38,18 @@ struct machOut idres(int b, int end, char *buff, FILE *listFile){
   //if not found in reserved words
   //how to pass lexeme in a struct CONTINUE
   if(rw.tokenResWord==-1 && rw.attributeResWord==-1){
-    int key = addSymbol(lexeme);
-    struct machOut out = {f, 0, lexeme, ID, key};//ptrToSymbol table uses key 0+
-    //printSymbols();
-    return out;
+    int check = checkSymbolExists(lexeme);
+    if(check==-1) {
+      int key = addSymbol(lexeme);
+      struct machOut out = {f, 0, lexeme, ID, key};//ptrToSymbol table uses key 0+
+      //printSymbols();
+      return out;
+    }
+    else{
+      struct machOut out = {f, 0, lexeme, ID, check};//ptrToSymbol table uses key 0+
+      printSymbols();
+      return out;
+    }
   }
   else{
     char* p = lexeme;

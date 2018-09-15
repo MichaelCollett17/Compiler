@@ -1,9 +1,2 @@
-1.	Tank is a dog
-2.	This is :=
-3.	:= .. wow
-4.	: cray
-5.	..,.,:=
-6.	no way
-7.	...
-8.	;()[]
-9.	Hi
+1.	Jump around and Jump
+2.	again Jump

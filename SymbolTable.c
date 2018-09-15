@@ -33,6 +33,22 @@ struct symbol getSymbol(int key){
   return *ptr;
 }
 
+int checkSymbolExists(char *lexeme){
+    struct symbol *ptr = symbolHead;
+    while(ptr){
+        if(strcmp(ptr->lexeme, lexeme)==0){
+            return ptr->key;
+        }
+        if(ptr -> nextSymbol){
+            ptr = ptr->nextSymbol;
+        }
+        else{
+            return -1;
+        }
+    }
+    return -1;
+}
+
 void printSymbols(){
   struct symbol *ptr = symbolHead;
   while(ptr){

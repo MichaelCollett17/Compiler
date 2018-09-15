@@ -9,5 +9,6 @@ struct symbol{
 int addSymbol(char *lexeme);
 struct symbol getSymbol(int key);
 void printSymbols();
+int checkSymbolExists(char *lexeme);
 
 #endif
