@@ -37,4 +37,7 @@
 #define LEXERR 99
 #define IDTOOLONG 100
 #define UNRECOGSYMB 101
+#define LEADZERO 102
+#define DECTRAILZERO 103
+#define EXPLEADZERO 104
 #endif
