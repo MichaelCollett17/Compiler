@@ -6,7 +6,7 @@ struct symbol{
   struct symbol *nextSymbol;
 };
 
-void addSymbol(char *lexeme);
+int addSymbol(char *lexeme);
 struct symbol getSymbol(int key);
 void printSymbols();
 

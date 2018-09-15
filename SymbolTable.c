@@ -7,13 +7,14 @@ struct symbol *symbolHead = NULL;
 struct symbol nextSymbolNull = {"",-1};
 int currentSymbolKey = 0;
 
-void addSymbol(char *lexeme){
+int addSymbol(char *lexeme){
  struct symbol *link = (struct symbol*) malloc(sizeof(struct symbol));
  link->lexeme = lexeme;
  link->key = currentSymbolKey;
  currentSymbolKey++;
  link->nextSymbol = symbolHead;
  symbolHead = link;
+ return link->key;
 }
 
 struct symbol getSymbol(int key){

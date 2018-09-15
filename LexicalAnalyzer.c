@@ -15,19 +15,16 @@ int stringLength(char *s){
 }
 
 int processMachineOutput(struct machOut out, int lineNum, int b){
-  if(out.b!=BLOCK){
     b = out.b;
     if(out.error>99){
       insert(lineNum, out.lexeme, LEXERR, out.error);
+      printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, LEXERR, out.error);
     }
     else{
       insert(lineNum, out.lexeme, out.tokenType, out.attribute);
+      printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, out.tokenType, out.attribute);
     }
     return b;
-  }
-  else{
-    return b;
-  }
 }
 
 //malloc dynamically allocate --read more
@@ -39,10 +36,23 @@ int machines(char *buff, FILE *listFile, int lineNum){
   int end = strlen(buff);
   struct machOut out;
   while(b<end){
+    //Whitespace
     b = whitespace(b, buff);
+    if(b==end){
+        continue;
+    }
+    //idres
     out = idres(b, end, buff, listFile);
-    b = processMachineOutput(out, lineNum, b);
-    break;
+    if(out.b!=BLOCK){
+        b = processMachineOutput(out, lineNum, b);
+        continue;
+    }
+    //catchall
+    out = catchall(b, end, buff, listFile);
+    if(out.b!=BLOCK){
+        b = processMachineOutput(out, lineNum, b);
+        continue;
+    }
   }
   return 0;
 }

@@ -22,7 +22,9 @@ struct machOut idres(int b, int end, char *buff, FILE *listFile){
   while(isalnum(buff[f])){
     f++;
   }
-  char lexeme[f-b+1];
+  //char lexeme[f-b+1];
+  //Kyle being my hero
+  char *lexeme = malloc((f-b+1)*sizeof(char));
   const char* from = buff;
   strncpy(lexeme, from+b,f-b);
   lexeme[f-b] = '\0';
@@ -32,16 +34,18 @@ struct machOut idres(int b, int end, char *buff, FILE *listFile){
     printf("%-12s%-30s%s\n", "LEXERR:", "IDTOOLONG", lexeme);
     return out;
   }
-  struct resWord rw= getTokAndAtt(lexeme);
-  //if not found
+  struct resWord rw = getTokAndAtt(lexeme);
+  //if not found in reserved words
+  //how to pass lexeme in a struct CONTINUE
   if(rw.tokenResWord==-1 && rw.attributeResWord==-1){
-    addSymbol(lexeme);
-    struct machOut out = {f, 0, lexeme, ID, 0};//ptrToSymbol table uses key 0+
-    printSymbols();
+    int key = addSymbol(lexeme);
+    struct machOut out = {f, 0, lexeme, ID, key};//ptrToSymbol table uses key 0+
+    //printSymbols();
+    return out;
   }
   else{
-
+    char* p = lexeme;
+    struct machOut out = {f, 0, lexeme, rw.tokenResWord, rw.attributeResWord};
+    return out;
   }
-  struct machOut out = {f, 0, lexeme};
-  return out;
 }
