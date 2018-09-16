@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "machines.h"
 #include "../reservedWords.h"
-#include "../SymbolTable.h"
+#include "../LinkedLists/SymbolTable.h"
 
 struct machOut idres(int b, int end, char *buff, FILE *listFile){
   int f = b;
