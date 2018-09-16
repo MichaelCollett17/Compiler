@@ -3,12 +3,12 @@ var 31  0
 array 32  0
 of  33  0
 integer 34  0
-real  35  
-function  36
-procedure 37
-begin 38  70
-end 38  71
-if  39  72
+real  35  0
+function  36  0
+procedure 37  0
+begin 38  70  0
+end 38  71  0
+if  39  72  0
 then  39  73
 else  39  74
 while 40  75

@@ -96,7 +96,7 @@ int main()
   char buff[72];
 
   //rfp = fopen("./PascalExample.pas", "r");
-  rfp = fopen("./InputFiles/ErrorFile.pas", "r");
+  rfp = fopen("./InputFiles/PascalExample.pas", "r");
   listFile = fopen("./OutputFiles/ListingFile.txt", "w+");
   tokFile = fopen("./OutputFiles/TokenFile.txt", "w+");
   loadReservedWords();

@@ -1,26 +1,12 @@
-1.	program errors();
-2.	abcdefghijk
-LEXERR:     IDTOOLONG                     abcdefghijk
-3.	12345678901 0123
-LEXERR:     INTTOOLONG                    12345678901
-LEXERR:     LEADZERO                      0123
-4.	123456.1 1.123456 1.10 01.1
-LEXERR:     SREAL1TOOLONG                 123456.1
-LEXERR:     SREAL2TOOLONG                 1.123456
-LEXERR:     DECTRAILZERO                  1.10
-LEXERR:     LEADZERO                      01.1
-5.	123456.1E2 1.123456E1 1.1E123
-LEXERR:     LREAL1TOOLONG                 123456.1E2
-LEXERR:     LREAL2TOOLONG                 1.123456E1
-LEXERR:     LREAL3TOOLONG                 1.1E123
-6.	1.10E1 01.1E1 1.1E01
-LEXERR:     DECTRAILZERO                  1.10E1
-LEXERR:     LEADZERO                      01.1E1
-LEXERR:     EXPLEADZERO                   1.1E01
-7.	#!@$%^
-LEXERR:     UnrecognizedSymbol            #
-LEXERR:     UnrecognizedSymbol            !
-LEXERR:     UnrecognizedSymbol            @
-LEXERR:     UnrecognizedSymbol            $
-LEXERR:     UnrecognizedSymbol            %
-LEXERR:     UnrecognizedSymbol            ^
+1.	program example(input, output);
+2.	var x, y: integer;
+3.	function gcd(a, b: integer): integer;
+4.	begin
+5.	  if b = 0 then gcd := a
+6.	  else gcd := gcd(b, a mod b)
+7.	end;
+8.	
+9.	begin
+10.	  read(x,y);
+11.	  write(gcd(x,y))
+12.	end.
