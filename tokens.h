@@ -46,4 +46,6 @@
 #define LREAL1TOOLONG 108
 #define LREAL2TOOLONG 109
 #define LREAL3TOOLONG 110
+//eof
+#define EOFTOKEN 20
 #endif

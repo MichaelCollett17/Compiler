@@ -47,7 +47,7 @@ struct machOut idres(int b, int end, char *buff, FILE *listFile){
     }
     else{
       struct machOut out = {f, 0, lexeme, ID, check};//ptrToSymbol table uses key 0+
-      printSymbols();
+      //printSymbols();
       return out;
     }
   }

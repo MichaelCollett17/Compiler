@@ -259,7 +259,6 @@ struct machOut number(int b, int end, char *buff, FILE *listFile){
     }
   }
   else if(numOut.state == 3){
-    printf("zz: %d\n", numOut.zz);
     if(numOut.xx > 5){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, LREAL1TOOLONG, out.lexeme};

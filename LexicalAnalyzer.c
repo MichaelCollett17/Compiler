@@ -19,11 +19,11 @@ int processMachineOutput(struct machOut out, int lineNum, int b){
     b = out.b;
     if(out.error>99){
       insert(lineNum, out.lexeme, LEXERR, out.error);
-      printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, LEXERR, out.error);
+      //printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, LEXERR, out.error);
     }
     else{
       insert(lineNum, out.lexeme, out.tokenType, out.attribute);
-      printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, out.tokenType, out.attribute);
+      //printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, out.tokenType, out.attribute);
     }
     return b;
 }
@@ -92,11 +92,13 @@ int main()
   char *eof;
   FILE *rfp;
   FILE *listFile;
+  FILE *tokFile;
   char buff[72];
 
   //rfp = fopen("./PascalExample.pas", "r");
   rfp = fopen("./InputFiles/ErrorFile.pas", "r");
-  listFile = fopen("./OutputFiles/ErrorFile.txt", "w+");
+  listFile = fopen("./OutputFiles/ListingFile.txt", "w+");
+  tokFile = fopen("./OutputFiles/TokenFile.txt", "w+");
   loadReservedWords();
 
   eof = loadBuffer(buff,rfp);
@@ -108,7 +110,7 @@ int main()
     lineNum++;
     //break;
   }
-
+  printList(tokFile);
   fclose(rfp);
   return 0;
 }

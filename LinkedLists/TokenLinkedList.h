@@ -11,5 +11,5 @@ struct node {
 
 void insert(int lineNo, char *lexeme, int tokenType, int attribute);
 void printList();
-
+void reverseTokens(struct node** AnotherHead);
 #endif
