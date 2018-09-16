@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "LinkedList.h"
+#include "TokenLinkedList.h"
 
 struct node *head = NULL;
 struct node *current = NULL;

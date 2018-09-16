@@ -5,7 +5,7 @@
 
 #include "tokens.h"
 #include "./Machines/machines.h"
-#include "./DataStructures/LinkedList.h"
+#include "./LinkedLists/TokenLinkedList.h"
 #include "reservedWords.h"
 
 int stringLength(char *s){
