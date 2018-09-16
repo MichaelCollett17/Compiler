@@ -1,4 +1,4 @@
-programalskdjf example(input, output);
+program example(input, output);
 var x, y: integer;
 function gcd(a, b: integer): integer;
 begin

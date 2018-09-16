@@ -216,11 +216,13 @@ struct machOut number(int b, int end, char *buff, FILE *listFile){
     if(numOut.xx > 10){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, INTTOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "INTTOOLONG", out.lexeme);
       return err;
     }
-    else if(numOut.lead1 == '0'){
+    else if((numOut.lead1 == '0') && (numOut.xx > 1)){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, LEADZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LEADZERO", out.lexeme);
       return err;
     }
     else{
@@ -231,21 +233,25 @@ struct machOut number(int b, int end, char *buff, FILE *listFile){
     if(numOut.xx > 5){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, SREAL1TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "SREAL1TOOLONG", out.lexeme);
       return err;
     }
     else if(numOut.yy > 5){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, SREAL2TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "SREAL2TOOLONG", out.lexeme);
       return err;
     }
     else if(numOut.trail2 == '0'){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, DECTRAILZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "DECTRAILZERO", out.lexeme);
       return err;
     }
     else if(numOut.lead1 == '0'){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, LEADZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LEADZERO", out.lexeme);
       return err;
     }
     else{
@@ -257,31 +263,37 @@ struct machOut number(int b, int end, char *buff, FILE *listFile){
     if(numOut.xx > 5){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, LREAL1TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LREAL1TOOLONG", out.lexeme);
       return err;
     }
     else if(numOut.yy > 5){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, LREAL2TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LREAL2TOOLONG", out.lexeme);
       return err;
     }
     else if(numOut.zz > 2){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, LREAL3TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LREAL3TOOLONG", out.lexeme);
       return err;
     }
     else if(numOut.trail2 == '0'){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, DECTRAILZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "DECTRAILZERO", out.lexeme);
       return err;
     }
     else if(numOut.lead1 == '0'){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, LEADZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LEADZERO", out.lexeme);
       return err;
     }
     else if(numOut.lead3 == '0'){
       struct machOut out = numOut.out;
       struct machOut err = {out.b, EXPLEADZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "EXPLEADZERO", out.lexeme);
       return err;
     }
     else{

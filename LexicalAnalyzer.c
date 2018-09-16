@@ -72,6 +72,7 @@ int machines(char *buff, FILE *listFile, int lineNum){
     lexeme[1] = '\0';
     struct machOut unrecog = {b+1, UNRECOGSYMB,lexeme};
     b = processMachineOutput(unrecog, lineNum, b);
+    fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "UnrecognizedSymbol", lexeme);
   }
   return 0;
 }
@@ -95,7 +96,7 @@ int main()
 
   //rfp = fopen("./PascalExample.pas", "r");
   rfp = fopen("./InputFiles/PascalExample.pas", "r");
-  listFile = fopen("./OutputFiles/ListingFile.txt", "w+");
+  listFile = fopen("./OutputFiles/PascaleListingFile.txt", "w+");
   loadReservedWords();
 
   eof = loadBuffer(buff,rfp);

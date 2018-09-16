@@ -31,7 +31,7 @@ struct machOut idres(int b, int end, char *buff, FILE *listFile){
   if((f-b) > 10){
     struct machOut out = {f, IDTOOLONG, lexeme};//when there is an error f-b will denote the lexeme size
     fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "IDTOOLONG", lexeme);
-    printf("%-12s%-30s%s\n", "LEXERR:", "IDTOOLONG", lexeme);
+    //printf("%-12s%-30s%s\n", "LEXERR:", "IDTOOLONG", lexeme);
     return out;
   }
   struct resWord rw = getTokAndAtt(lexeme);
