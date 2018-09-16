@@ -1,2 +1,2 @@
 makelexical: LexicalAnalyzer.c ./Machines/idres.c ./Machines/whitespace.c ./LinkedLists/TokenLinkedList.c reservedWords.c ./LinkedLists/SymbolTable.c ./Machines/Catchall.c ./Machines/Relop.c ./Machines/Number.c
-	gcc -o test LexicalAnalyzer.c ./Machines/idres.c ./Machines/whitespace.c ./LinkedLists/TokenLinkedList.c reservedWords.c ./LinkedLists/SymbolTable.c ./Machines/Catchall.c ./Machines/Relop.c ./Machines/Number.c
+	gcc -o Lex LexicalAnalyzer.c ./Machines/idres.c ./Machines/whitespace.c ./LinkedLists/TokenLinkedList.c reservedWords.c ./LinkedLists/SymbolTable.c ./Machines/Catchall.c ./Machines/Relop.c ./Machines/Number.c
