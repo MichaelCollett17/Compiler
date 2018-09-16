@@ -95,8 +95,8 @@ int main()
   char buff[72];
 
   //rfp = fopen("./PascalExample.pas", "r");
-  rfp = fopen("./InputFiles/PascalExample.pas", "r");
-  listFile = fopen("./OutputFiles/PascaleListingFile.txt", "w+");
+  rfp = fopen("./InputFiles/ErrorFile.pas", "r");
+  listFile = fopen("./OutputFiles/ErrorFile.txt", "w+");
   loadReservedWords();
 
   eof = loadBuffer(buff,rfp);
