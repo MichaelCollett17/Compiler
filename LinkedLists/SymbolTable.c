@@ -7,6 +7,9 @@ struct symbol *symbolHead = NULL;
 struct symbol nextSymbolNull = {"",-1};
 int currentSymbolKey = 0;
 
+//when you instantiate something it will retain the values in that memory location
+//when creating a variable you either assign it a value immediately or set it to NULL
+//same with structs
 int addSymbol(char *lexeme){
  struct symbol *link = (struct symbol*) malloc(sizeof(struct symbol));
  link->lexeme = lexeme;
@@ -33,20 +36,25 @@ struct symbol getSymbol(int key){
   return *ptr;
 }
 
-int checkSymbolExists(char *lexeme){
+/*
+ * ptr is being dereferenced when I return it so it is returning
+ * a copy of the symbol
+ *
+ */
+struct symbol* checkSymbolExists(char *lexeme){
     struct symbol *ptr = symbolHead;
     while(ptr){
         if(strcmp(ptr->lexeme, lexeme)==0){
-            return ptr->key;
+            return ptr;
         }
         if(ptr -> nextSymbol){
             ptr = ptr->nextSymbol;
         }
         else{
-            return -1;
+            return NULL;
         }
     }
-    return -1;
+    return NULL;
 }
 
 void printSymbols(){

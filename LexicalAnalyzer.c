@@ -96,9 +96,10 @@ int main()
   char buff[72];
 
   //rfp = fopen("./PascalExample.pas", "r");
-  rfp = fopen("./InputFiles/PascalExample.pas", "r");
-  listFile = fopen("./OutputFiles/ListingFile.txt", "w+");
-  tokFile = fopen("./OutputFiles/TokenFile.txt", "w+");
+  rfp = fopen("./InputFiles/ShenoiFile.pas", "r");
+  listFile = fopen("./OutputFiles/ListingFileShenoi.txt", "w+");
+  tokFile = fopen("./OutputFiles/TokenFileShenoi.txt", "w+");
+  
   loadReservedWords();
 
   eof = loadBuffer(buff,rfp);

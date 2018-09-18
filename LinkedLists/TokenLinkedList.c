@@ -42,7 +42,12 @@ void printList(FILE *tokFile) {
   struct node *ptr = head;
   fprintf(tokFile, "%-12s\t%-20s\t%-12s\t%s\n", "Line No.", "Lexeme", "Token Type", "Attribute");
   while(ptr != NULL){
-    fprintf(tokFile, "%-12d\t%-20s\t%-12d\t%d\n", ptr->lineNo, ptr->lexeme, ptr->tokenType,ptr->attribute);
+    if(ptr->tokenType == 1){
+      fprintf(tokFile, "%-12d\t%-20s\t%-12d\t%p\n", ptr->lineNo, ptr->lexeme, ptr->tokenType,(void *)(ptr->lexeme));
+    }
+    else{
+      fprintf(tokFile, "%-12d\t%-20s\t%-12d\t%d\n", ptr->lineNo, ptr->lexeme, ptr->tokenType,ptr->attribute);
+    }
     ptr = ptr -> next;
   }
   //print EOF

@@ -1,0 +1,1035 @@
+----------------------------------------------------------------------
+LexicalAnalyzer.c
+----------------------------------------------------------------------
+----------
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+#include "tokens.h"
+#include "./Machines/machines.h"
+#include "./LinkedLists/TokenLinkedList.h"
+#include "reservedWords.h"
+
+int stringLength(char *s){
+  int n;
+  for(n=0; *s != '\0'; s++)
+    n++;
+  return n;
+}
+
+int processMachineOutput(struct machOut out, int lineNum, int b){
+    b = out.b;
+    if(out.error>99){
+      insert(lineNum, out.lexeme, LEXERR, out.error);
+      //printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, LEXERR, out.error);
+    }
+    else{
+      insert(lineNum, out.lexeme, out.tokenType, out.attribute);
+      //printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, out.tokenType, out.attribute);
+    }
+    return b;
+}
+
+//malloc dynamically allocate --read more
+//realloc reallocate variable size
+//calloc and pragma
+int machines(char *buff, FILE *listFile, int lineNum){
+  int b = 0;//back
+  int f = 0;//front
+  int end = strlen(buff);
+  struct machOut out;
+  while(b<end){
+    //Whitespace
+    b = whitespace(b, buff);
+    if(b==end){
+        continue;
+    }
+    //idres
+    out = idres(b, end, buff, listFile);
+    if(out.b!=BLOCK){
+        b = processMachineOutput(out, lineNum, b);
+        continue;
+    }
+    //catchall
+    out = catchall(b, end, buff, listFile);
+    if(out.b!=BLOCK){
+        b = processMachineOutput(out, lineNum, b);
+        continue;
+    }
+    //nums
+    out = number(b, end, buff, listFile);
+    if(out.b!=BLOCK){
+        b = processMachineOutput(out, lineNum, b);
+        continue;
+    }
+    //relops
+    out = relop(b, end, buff, listFile);
+    if(out.b!=BLOCK){
+        b = processMachineOutput(out, lineNum, b);
+        continue;
+    }
+    //Unrecognized symbol
+    char *lexeme = malloc(2*sizeof(char));
+    lexeme[0] = buff[b];
+    lexeme[1] = '\0';
+    struct machOut unrecog = {b+1, UNRECOGSYMB,lexeme};
+    b = processMachineOutput(unrecog, lineNum, b);
+    fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "UnrecognizedSymbol", lexeme);
+  }
+  return 0;
+}
+
+//Loads the next line into buffer... eof will return NULL
+char* loadBuffer(char *buff, FILE *fp){
+  return fgets(buff, 72, (FILE*)fp);
+}
+
+//Prints next line into Listing file
+int printBuffer(char *buff, FILE *listFile, int lineNum){
+  return fprintf(listFile, "%d.\t%s", lineNum, buff);
+}
+
+int main()
+{
+  char *eof;
+  FILE *rfp;
+  FILE *listFile;
+  FILE *tokFile;
+  char buff[72];
+
+  //rfp = fopen("./PascalExample.pas", "r");
+  rfp = fopen("./InputFiles/PascalExample.pas", "r");
+  listFile = fopen("./OutputFiles/ListingFile.txt", "w+");
+  tokFile = fopen("./OutputFiles/TokenFile.txt", "w+");
+  loadReservedWords();
+
+  eof = loadBuffer(buff,rfp);
+  int lineNum = 1;
+  while(eof!=NULL){
+    printBuffer(buff,listFile,lineNum);
+    machines(buff, listFile, lineNum);
+    eof = loadBuffer(buff,rfp);
+    lineNum++;
+    //break;
+  }
+  printList(tokFile);
+  fclose(rfp);
+  return 0;
+}
+
+----------------------------------------------------------------------
+reservedWords.c
+----------------------------------------------------------------------
+
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "reservedWords.h"
+
+struct resWord *resWordHead = NULL;
+struct resWord resWordNull = {"",-1,-1};
+
+void insertResWord(char *lexResWord, int tokenResWord, int attributeResWord) {
+   struct resWord *link = (struct resWord*) malloc(sizeof(struct resWord));
+   link->lexResWord = lexResWord;
+   link->tokenResWord = tokenResWord;
+   link->attributeResWord = attributeResWord;
+   link->nextResWord = resWordHead;
+   resWordHead = link;
+}
+
+void printResWordList() {
+  struct resWord *ptr = resWordHead;
+  while(ptr != NULL){
+    printf("%s\t%d\t%d\n", ptr->lexResWord,ptr->tokenResWord,ptr->attributeResWord);
+    ptr = ptr -> nextResWord;
+  }
+}
+
+//strcmp returns 0 if they're the same
+struct resWord getTokAndAtt(char *lexeme){
+  struct resWord *ptr = resWordHead;
+  while(ptr != NULL){
+    if(strcmp(ptr->lexResWord, lexeme)==0){
+     return *ptr;
+    }
+    if(ptr -> nextResWord){
+      ptr = ptr -> nextResWord;
+    }
+    else{
+      return resWordNull;
+    }
+  }
+  return *ptr;
+}
+
+void loadReservedWords(){
+  FILE *resWordFile;
+  char *eof;
+  int tok;
+  int att;
+  resWordFile = fopen("./reservedWords.dat", "r");
+  char lex[32];
+  //This could be made much more efficient. Ask Bray about it perphaps
+  while(fscanf(resWordFile,"%s\t%d\t%d\n", lex, &tok, &att)!=EOF){
+    char *lexeme = (char*)malloc(strlen(lex));
+    const char* from = lex;
+    strncpy(lexeme, from, strlen(lex)+1);
+    insertResWord(lexeme, tok, att);
+  }
+}
+----------------------------------------------------------------------
+reservedWords.h
+----------------------------------------------------------------------
+#ifndef RESWORDS
+#define RESWORDS
+
+struct resWord{
+  char *lexResWord;
+  int tokenResWord;
+  int attributeResWord;
+  struct resWord *nextResWord;
+};
+
+void loadReservedWords();
+struct resWord getTokAndAtt(char *lexeme);
+
+#endif
+
+----------------------------------------------------------------------
+tokens.h
+----------------------------------------------------------------------
+#ifndef TOKENS
+#define TOKENS
+//Block Number
+#define BLOCK -1
+//Tokens
+#define ID 1
+#define GROUPING 2
+#define ASSIGNOP 3
+#define PUNCTUATION 4
+#define ARRAY 5
+#define TYPE 6
+#define RELOP 7
+#define MULOP 8
+#define ADDOP 9
+#define INT 10
+#define SREAL 11
+#define LREAL 12
+//Attributes
+#define LPAR 81
+#define RPAR 82
+#define LBRACK 83
+#define RBRACK 84
+#define COMMA 85
+#define SEMICOLON 86
+#define PERIOD 87
+#define LTEQ 88
+#define NEQ 89
+#define LT 90
+#define EQ 91
+#define GTEQ 92
+#define GT 93
+#define MULT 94
+#define DIV 95
+#define ADD 96
+#define SUB 97
+//Errors
+#define LEXERR 99
+#define IDTOOLONG 100
+#define UNRECOGSYMB 101
+#define LEADZERO 102
+#define DECTRAILZERO 103
+#define EXPLEADZERO 104
+#define INTTOOLONG 105
+#define SREAL1TOOLONG 106
+#define SREAL2TOOLONG 107
+#define LREAL1TOOLONG 108
+#define LREAL2TOOLONG 109
+#define LREAL3TOOLONG 110
+//eof
+#define EOFTOKEN 20
+#endif
+
+----------------------------------------------------------------------
+SymbolTable.c
+----------------------------------------------------------------------
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "SymbolTable.h"
+
+struct symbol *symbolHead = NULL;
+struct symbol nextSymbolNull = {"",-1};
+int currentSymbolKey = 0;
+
+int addSymbol(char *lexeme){
+ struct symbol *link = (struct symbol*) malloc(sizeof(struct symbol));
+ link->lexeme = lexeme;
+ link->key = currentSymbolKey;
+ currentSymbolKey++;
+ link->nextSymbol = symbolHead;
+ symbolHead = link;
+ return link->key;
+}
+
+struct symbol getSymbol(int key){
+  struct symbol *ptr = symbolHead;
+  while(ptr){
+    if(ptr->key == key){
+      return *ptr;
+    }
+    if(ptr ->nextSymbol){
+      ptr = ptr->nextSymbol;
+    }
+    else{
+      return nextSymbolNull;
+    }
+  }
+  return *ptr;
+}
+
+int checkSymbolExists(char *lexeme){
+    struct symbol *ptr = symbolHead;
+    while(ptr){
+        if(strcmp(ptr->lexeme, lexeme)==0){
+            return ptr->key;
+        }
+        if(ptr -> nextSymbol){
+            ptr = ptr->nextSymbol;
+        }
+        else{
+            return -1;
+        }
+    }
+    return -1;
+}
+
+void printSymbols(){
+  struct symbol *ptr = symbolHead;
+  while(ptr){
+    printf("%s\t%d\n", ptr->lexeme,ptr->key);
+    ptr = ptr -> nextSymbol;
+  }
+}
+
+----------------------------------------------------------------------
+SymbolTable.h
+----------------------------------------------------------------------
+#ifndef SYMBOLTABLE
+#define SYMBOLTABLE
+struct symbol{
+  char *lexeme;
+  int key;
+  struct symbol *nextSymbol;
+};
+
+int addSymbol(char *lexeme);
+struct symbol getSymbol(int key);
+void printSymbols();
+int checkSymbolExists(char *lexeme);
+
+#endif
+
+----------------------------------------------------------------------
+TokenLinkedList.c
+----------------------------------------------------------------------
+#include <stdlib.h>
+#include <stdio.h>
+#include "TokenLinkedList.h"
+#include "../tokens.h"
+
+struct node *head = NULL;
+struct node *current = NULL;
+
+void insert(int lineNo, char *lexeme, int tokenType, int attribute) {
+   //create a link
+   struct node *link = (struct node*) malloc(sizeof(struct node));
+
+   //link->key = key;
+   link->lineNo = lineNo;
+   link->lexeme = lexeme;
+   link->tokenType = tokenType;
+   link->attribute = attribute;
+
+   //point it to old first node
+   link->next = head;
+
+   //point first to new first node
+   head = link;
+}
+
+void reverseTokens(struct node** AnotherHead){
+  struct node* prev = NULL;
+  struct node* current = *AnotherHead;
+  struct node* next;
+
+  while(current != NULL){
+    next  = current->next;
+      current->next = prev;
+      prev = current;
+      current = next;
+  }
+    *AnotherHead = prev;
+}
+
+void printList(FILE *tokFile) {
+  reverseTokens(&head);
+  struct node *ptr = head;
+  fprintf(tokFile, "%-12s\t%-20s\t%-12s\t%s\n", "Line No.", "Lexeme", "Token Type", "Attribute");
+  while(ptr != NULL){
+    fprintf(tokFile, "%-12d\t%-20s\t%-12d\t%d\n", ptr->lineNo, ptr->lexeme, ptr->tokenType,ptr->attribute);
+    ptr = ptr -> next;
+  }
+  //print EOF
+  fprintf(tokFile, "%-12d\t%-20s\t%-12d\t%d\n", EOF, "EOF", EOFTOKEN, 0);
+}
+
+----------------------------------------------------------------------
+TokenLinkedList.h
+----------------------------------------------------------------------
+#ifndef LINKEDLIST
+#define LINKEDLIST
+
+struct node {
+  int lineNo;
+  char *lexeme;
+  int tokenType;
+  int attribute;
+  struct node *next;
+};
+
+void insert(int lineNo, char *lexeme, int tokenType, int attribute);
+void printList();
+void reverseTokens(struct node** AnotherHead);
+#endif
+
+----------------------------------------------------------------------
+machines.h
+----------------------------------------------------------------------
+#ifndef MACHINES
+#define MACHINES
+#include "../tokens.h"
+/*this way we can compile individual machines c files but it isn't inefficiently
+ compiling the whole program*/
+struct machOut
+{
+  int b;
+  int error;
+  char *lexeme;
+  int tokenType;
+  int attribute;
+};
+int whitespace(int b, char *buff);
+struct machOut idres(int b, int end, char *buff, FILE *listFile);
+struct machOut catchall(int b, int end, char *buff, FILE *listFile);
+struct machOut relop(int b, int end, char *buff, FILE *listFile);
+struct machOut number(int b, int end, char *buff, FILE *listFile);
+
+#endif
+
+----------------------------------------------------------------------
+idres.c
+----------------------------------------------------------------------
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
+#include "machines.h"
+#include "../reservedWords.h"
+#include "../LinkedLists/SymbolTable.h"
+
+struct machOut idres(int b, int end, char *buff, FILE *listFile){
+  int f = b;
+
+  //starting character
+  if(isalpha(buff[f])){
+    f++;
+  }
+  else{
+    struct machOut block = {BLOCK, -1, "\0"};
+    return block;
+  }
+
+  //subsequent characters
+  while(isalnum(buff[f])){
+    f++;
+  }
+  //char lexeme[f-b+1];
+  //Kyle being my hero
+  char *lexeme = malloc((f-b+1)*sizeof(char));
+  const char* from = buff;
+  strncpy(lexeme, from+b,f-b);
+  lexeme[f-b] = '\0';
+  if((f-b) > 10){
+    struct machOut out = {f, IDTOOLONG, lexeme};//when there is an error f-b will denote the lexeme size
+    fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "IDTOOLONG", lexeme);
+    //printf("%-12s%-30s%s\n", "LEXERR:", "IDTOOLONG", lexeme);
+    return out;
+  }
+  struct resWord rw = getTokAndAtt(lexeme);
+  //if not found in reserved words
+  //how to pass lexeme in a struct CONTINUE
+  if(rw.tokenResWord==-1 && rw.attributeResWord==-1){
+    int check = checkSymbolExists(lexeme);
+    if(check==-1) {
+      int key = addSymbol(lexeme);
+      struct machOut out = {f, 0, lexeme, ID, key};//ptrToSymbol table uses key 0+
+      //printSymbols();
+      return out;
+    }
+    else{
+      struct machOut out = {f, 0, lexeme, ID, check};//ptrToSymbol table uses key 0+
+      //printSymbols();
+      return out;
+    }
+  }
+  else{
+    char* p = lexeme;
+    struct machOut out = {f, 0, lexeme, rw.tokenResWord, rw.attributeResWord};
+    return out;
+  }
+}
+
+----------------------------------------------------------------------
+Catchall.c
+----------------------------------------------------------------------
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "machines.h"
+#include "../tokens.h"
+
+/*
+ * This file finds all types of characters including:
+ * ':=', '..', ':', ',', ';', '.', '(', ')', '[', ']'
+ */
+
+struct machOut catchall(int b, int end, char *buff, FILE *listFile){
+    int f =b;
+    if(strncmp(&buff[f], ":=", 2)==0) {
+        f = f+2;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, ASSIGNOP, 0};
+        return out;
+    }
+    else if(strncmp(&buff[f], "..", 2)==0){
+        f = f+2;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, ARRAY, 0};
+        return out;
+    }
+    else if(buff[f] == ':'){
+        f++;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, TYPE, 0};
+        return out;
+    }
+    else if(buff[f] == ','){
+        f++;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, PUNCTUATION, COMMA};
+        return out;
+    }
+    else if(buff[f] == ';'){
+        f++;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, PUNCTUATION, SEMICOLON};
+        return out;
+    }
+    else if(buff[f] == '.'){
+        f++;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, PUNCTUATION, PERIOD};
+        return out;
+    }
+    else if(buff[f] == '('){
+        f++;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, GROUPING, LPAR};
+        return out;
+    }
+    else if(buff[f] == ')'){
+        f++;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, GROUPING, RPAR};
+        return out;
+    }
+    else if(buff[f] == '['){
+        f++;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, GROUPING, LBRACK};
+        return out;
+    }
+    else if(buff[f] == ']'){
+        f++;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, GROUPING, RBRACK};
+        return out;
+    }
+    else if(buff[f]== '+'){
+      f++;
+      char *lexeme = malloc((f-b+1)*sizeof(char));
+      const char* from = buff;
+      strncpy(lexeme, from+b, f-b);
+      lexeme[f-b] = '\0';
+      struct machOut out = {f, 0, lexeme, ADDOP, ADD};
+      return out;
+    }
+    else if(buff[f]== '-'){
+      f++;
+      char *lexeme = malloc((f-b+1)*sizeof(char));
+      const char* from = buff;
+      strncpy(lexeme, from+b, f-b);
+      lexeme[f-b] = '\0';
+      struct machOut out = {f, 0, lexeme, ADDOP, SUB};
+      return out;
+    }
+    else if(buff[f] == '*'){
+      f++;
+      char *lexeme = malloc((f-b+1)*sizeof(char));
+      const char* from = buff;
+      strncpy(lexeme, from+b, f-b);
+      lexeme[f-b] = '\0';
+      struct machOut out = {f, 0, lexeme, MULOP, MULT};
+      return out;
+    }
+    else if(buff[f]== '/'){
+      f++;
+      char *lexeme = malloc((f-b+1)*sizeof(char));
+      const char* from = buff;
+      strncpy(lexeme, from+b, f-b);
+      lexeme[f-b] = '\0';
+      struct machOut out = {f, 0, lexeme, MULOP, DIV};
+      return out;
+    }
+    else{
+        struct machOut block = {BLOCK, -1, "\0", -1, -1};
+        return block;
+    }
+}
+
+----------------------------------------------------------------------
+Number.c
+----------------------------------------------------------------------
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
+#include "machines.h"
+
+struct numsOut
+{
+  struct machOut out;
+  int xx;
+  int yy;
+  int zz;
+  char lead1;
+  char trail2;
+  char lead3;
+  int state;
+};
+
+// int checkError(int state, int xx, int yy, int zz, char lead1, char trail2, char lead3){
+//   return 0;
+// }
+
+struct numsOut numbers(int b, int end, char *buff, FILE *listFile){
+  int state = 0;//1 int, 2 sreal, 3 lreal
+  int xx = 0;
+  int yy = 0;
+  int zz = 0;
+  char lead1 = 'a';
+  char trail2 = 'a';
+  char lead3 = 'a';
+  int f=b;
+
+  if(isdigit(buff[f])!=0){
+    f++;
+    while(isdigit(buff[f])!=0){
+      f++;
+    }
+    xx=f-b;
+    lead1 = buff[b];
+    // if(((f-b)>1) && buff[b]=='0'){//CHECK LEADING ZERO
+    //   //LEADING ZERO
+    //   char *lexeme = malloc((f-b+1)*sizeof(char));
+    //   const char* from = buff;
+    //   strncpy(lexeme, from+b,f-b);
+    //   lexeme[f-b] = '\0';
+    //   struct machOut err = {f, LEADZERO, lexeme};
+    //   return err;
+    // }
+    if(buff[f] == '.'){
+      f++;
+      if(isdigit(buff[f])!=0){
+        f++;
+        while(isdigit(buff[f])!=0){
+          f++;
+        }
+        yy = f-b-xx-1;//minus 1 for period
+        trail2 = buff[f-1];
+        if(buff[f] == 'E'){//took out option for e because it isn't listed among pascals lexical conventions
+          f++;
+          if(isdigit(buff[f])!=0){
+            lead3=buff[f];
+            f++;
+            // if(buff[f-1] == '0'){
+            //   //EXPLEADZERO
+            //   //LEADING ZERO
+            //   char *lexeme = malloc((f-b+1)*sizeof(char));
+            //   const char* from = buff;
+            //   strncpy(lexeme, from+b,f-b);
+            //   lexeme[f-b] = '\0';
+            //   struct machOut err = {f, EXPLEADZERO, lexeme};
+            //   return err;
+            // }
+            state=3;//is definetly lreal
+            while(isdigit(buff[f])!=0){
+              f++;
+            }
+            zz = f-b-yy-xx-1-1;//period, e,xx,yy
+            //return lreal d.dEd
+            state = 3;//lreal
+            char *lexeme = malloc((f-b+1)*sizeof(char));
+            const char* from = buff;
+            strncpy(lexeme, from+b, f-b);
+            lexeme[f-b] = '\0';
+            struct machOut out = {f, 0, lexeme, LREAL, 0};
+            struct numsOut numOut = {out, xx, yy, zz,lead1, trail2, lead3, state};
+            return numOut;
+          }
+          else if(buff[f] == '+' || buff[f] == '-'){
+            f++;
+            if(isdigit(buff[f])!=0){
+              lead3=buff[f];
+              f++;
+              // if(buff[f-1] == '0'){
+              //   //EXPLEADZERO
+              //   //LEADING ZERO
+              //   char *lexeme = malloc((f-b+1)*sizeof(char));
+              //   const char* from = buff;
+              //   strncpy(lexeme, from+b,f-b);
+              //   lexeme[f-b] = '\0';
+              //   struct machOut err = {f, EXPLEADZERO, lexeme};
+              //   return err;
+              // }
+              //d.dE+/-d
+              while(isdigit(buff[f])!=0){
+                f++;
+              }
+              zz = f-b-yy-xx-1-2;//period, e, +/-, xx, yy
+              state = 3;
+              //return lreal
+              char *lexeme = malloc((f-b+1)*sizeof(char));
+              const char* from = buff;
+              strncpy(lexeme, from+b, f-b);
+              lexeme[f-b] = '\0';
+              struct machOut out = {f, 0, lexeme, LREAL, 0};
+              struct numsOut numOut = {out, xx, yy, zz,lead1, trail2, lead3, state};
+              return numOut;
+            }
+            else{
+              f--;
+              //trail2 = buff[f-1];
+              //d.dE+O
+              // if(buff[f-1] == '0'){
+              //   //DECTRAILZERO
+              //   char *lexeme = malloc((f-b+1)*sizeof(char));
+              //   const char* from = buff;
+              //   strncpy(lexeme, from+b,f-b);
+              //   lexeme[f-b] = '\0';
+              //   struct machOut err = {f, DECTRAILZERO, lexeme};
+              //   return err;
+              // }
+              state = 2;//return sreal
+              char *lexeme = malloc((f-b+1)*sizeof(char));
+              const char* from = buff;
+              strncpy(lexeme, from+b, f-b);
+              lexeme[f-b] = '\0';
+              struct machOut out = {f, 0, lexeme, SREAL, 0};
+              struct numsOut numOut = {out, xx, yy, zz,lead1, trail2, lead3, state};
+              return numOut;
+            }
+          }
+          else{
+            //trail2 = buff[f-1];
+            // if(buff[f-1] == '0'){
+            //   //DECTRAILZERO
+            //   char *lexeme = malloc((f-b+1)*sizeof(char));
+            //   const char* from = buff;
+            //   strncpy(lexeme, from+b,f-b);
+            //   lexeme[f-b] = '\0';
+            //   struct machOut err = {f, DECTRAILZERO, lexeme};
+            //   return err;
+            // }
+            state = 2;//sreal
+            char *lexeme = malloc((f-b+1)*sizeof(char));
+            const char* from = buff;
+            strncpy(lexeme, from+b, f-b);
+            lexeme[f-b] = '\0';
+            struct machOut out = {f, 0, lexeme, SREAL, 0};
+            struct numsOut numOut = {out, xx, yy, zz,lead1, trail2, lead3, state};
+            return numOut;
+          }
+        }
+        else{
+          // if(buff[f-1] == '0'){
+          //   //DECTRAILZERO
+          //   char *lexeme = malloc((f-b+1)*sizeof(char));
+          //   const char* from = buff;
+          //   strncpy(lexeme, from+b,f-b);
+          //   lexeme[f-b] = '\0';
+          //   struct machOut err = {f, DECTRAILZERO, lexeme};
+          //   return err;
+          // }
+          state = 2;//sreal
+          char *lexeme = malloc((f-b+1)*sizeof(char));
+          const char* from = buff;
+          strncpy(lexeme, from+b, f-b);
+          lexeme[f-b] = '\0';
+          struct machOut out = {f, 0, lexeme, SREAL, 0};
+          struct numsOut numOut = {out, xx, yy, zz,lead1, trail2, lead3, state};
+          return numOut;
+        }
+      }
+      else{ //d.O
+        f--;
+        state = 1;//not a real...return just the int
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, INT, 0};
+        struct numsOut numOut = {out, xx, yy, zz,lead1, trail2, lead3, state};
+        return numOut;
+      }
+    }
+    else{
+      state = 1;//int
+      char *lexeme = malloc((f-b+1)*sizeof(char));
+      const char* from = buff;
+      strncpy(lexeme, from+b, f-b);
+      lexeme[f-b] = '\0';
+      struct machOut out = {f, 0, lexeme, INT, 0};
+      struct numsOut numOut = {out, xx, yy, zz,lead1, trail2, lead3, state};
+      return numOut;
+    }
+  }
+  else{
+    struct machOut block = {BLOCK, -1, "\0", -1, -1};
+    struct numsOut blockOut = {block};
+    return blockOut;
+  }
+}
+
+struct machOut number(int b, int end, char *buff, FILE *listFile){
+  struct numsOut numOut = numbers(b,end,buff,listFile);
+  //check for all errors!
+  if(numOut.state == 1){//int
+    if(numOut.xx > 10){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, INTTOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "INTTOOLONG", out.lexeme);
+      return err;
+    }
+    else if((numOut.lead1 == '0') && (numOut.xx > 1)){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, LEADZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LEADZERO", out.lexeme);
+      return err;
+    }
+    else{
+      return numOut.out;
+    }
+  }
+  else if(numOut.state == 2){//SREAL
+    if(numOut.xx > 5){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, SREAL1TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "SREAL1TOOLONG", out.lexeme);
+      return err;
+    }
+    else if(numOut.yy > 5){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, SREAL2TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "SREAL2TOOLONG", out.lexeme);
+      return err;
+    }
+    else if((numOut.trail2 == '0') && (numOut.yy>1)){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, DECTRAILZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "DECTRAILZERO", out.lexeme);
+      return err;
+    }
+    else if((numOut.lead1 == '0') && (numOut.xx > 1)){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, LEADZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LEADZERO", out.lexeme);
+      return err;
+    }
+    else{
+      return numOut.out;
+    }
+  }
+  else if(numOut.state == 3){
+    if(numOut.xx > 5){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, LREAL1TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LREAL1TOOLONG", out.lexeme);
+      return err;
+    }
+    else if(numOut.yy > 5){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, LREAL2TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LREAL2TOOLONG", out.lexeme);
+      return err;
+    }
+    else if(numOut.zz > 2){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, LREAL3TOOLONG, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LREAL3TOOLONG", out.lexeme);
+      return err;
+    }
+    else if((numOut.trail2 == '0') && (numOut.yy>1)){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, DECTRAILZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "DECTRAILZERO", out.lexeme);
+      return err;
+    }
+    else if((numOut.lead1 == '0') && (numOut.xx > 1)){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, LEADZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "LEADZERO", out.lexeme);
+      return err;
+    }
+    else if(numOut.lead3 == '0'){
+      struct machOut out = numOut.out;
+      struct machOut err = {out.b, EXPLEADZERO, out.lexeme};
+      fprintf(listFile, "%-12s%-30s%s\n", "LEXERR:", "EXPLEADZERO", out.lexeme);
+      return err;
+    }
+    else{
+      return numOut.out;
+    }
+  }
+  else{
+    return numOut.out;
+  }
+}
+
+----------------------------------------------------------------------
+Relop.c
+----------------------------------------------------------------------
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "machines.h"
+
+struct machOut relop(int b, int end, char *buff, FILE *listFile) {
+    int f = b;
+    if(buff[f] == '<'){
+        f++;
+        if(buff[f] == '='){
+            f++;
+            char *lexeme = malloc((f-b+1)*sizeof(char));
+            const char* from = buff;
+            strncpy(lexeme, from+b, f-b);
+            lexeme[f-b] = '\0';
+            struct machOut out = {f, 0, lexeme, RELOP, LTEQ};
+            return out;
+        }
+        else if(buff[f] == '>'){
+            f++;
+            char *lexeme = malloc((f-b+1)*sizeof(char));
+            const char* from = buff;
+            strncpy(lexeme, from+b, f-b);
+            lexeme[f-b] = '\0';
+            struct machOut out = {f, 0, lexeme, RELOP, NEQ};
+            return out;
+        }
+        else{
+            char *lexeme = malloc((f-b+1)*sizeof(char));
+            const char* from = buff;
+            strncpy(lexeme, from+b, f-b);
+            lexeme[f-b] = '\0';
+            struct machOut out = {f, 0, lexeme, RELOP, LT};
+            return out;
+        }
+    }
+    else if(buff[f] == '='){
+        f++;
+        char *lexeme = malloc((f-b+1)*sizeof(char));
+        const char* from = buff;
+        strncpy(lexeme, from+b, f-b);
+        lexeme[f-b] = '\0';
+        struct machOut out = {f, 0, lexeme, RELOP, EQ};
+        return out;
+    }
+    else if(buff[f] == '>'){
+        f++;
+        if(buff[f] == '='){
+            f++;
+            char *lexeme = malloc((f-b+1)*sizeof(char));
+            const char* from = buff;
+            strncpy(lexeme, from+b, f-b);
+            lexeme[f-b] = '\0';
+            struct machOut out = {f, 0, lexeme, RELOP, GTEQ};
+            return out;
+        }
+        else{
+            char *lexeme = malloc((f-b+1)*sizeof(char));
+            const char* from = buff;
+            strncpy(lexeme, from+b, f-b);
+            lexeme[f-b] = '\0';
+            struct machOut out = {f, 0, lexeme, RELOP, GT};
+            return out;
+        }
+    }
+    else{
+        struct machOut block = {BLOCK, -1, "\0", -1, -1};
+        return block;
+    }
+}
+----------------------------------------------------------------------
+whitespace.c
+----------------------------------------------------------------------
+#include <ctype.h>
+int whitespace(int b, char *buff){
+  while(isspace(buff[b])){
+    b++;
+  }
+  return b;
+}
