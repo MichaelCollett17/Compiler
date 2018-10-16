@@ -1,2 +1,2 @@
-1.	program myprog();
+1.	program myprog(this);
 2.	.

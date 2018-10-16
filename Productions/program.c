@@ -4,18 +4,27 @@
 #include "../LinkedLists/TokenLinkedList.h"
 #include "./productions.h"
 #include "../reservedWords.h"
+#include "../Parser.h"
+
 void program(){
-  // Only one production for program so no need for switch statement
   struct resWord program = getTokAndAtt("program");
-  match(program.tokenResWord, program.attributeResWord, program.lexResWord);
-  match(ID, 0, "ID");
-  match(GROUPING, LPAR, "(");
-  //idlst()
-  match(GROUPING, RPAR, ")");
-  match(PUNCTUATION,SEMICOLON, ";");
-  //declarations();
-  //subdeclarations();
-  //compound_statement();
-  match(PUNCTUATION, PERIOD, ".");
-  return;
+  if(tok.tokenType == program.tokenResWord) {
+    match(program.tokenResWord, program.attributeResWord, program.lexResWord);
+    match(ID, 0, "ID");
+    match(GROUPING, LPAR, "(");
+    idlst();
+    match(GROUPING, RPAR, ")");
+    match(PUNCTUATION,SEMICOLON, ";");
+    //declarations();
+    //subdeclarations();
+    //compound_statement();
+    match(PUNCTUATION, PERIOD, ".");
+  }
+  else{
+    //synch
+    writeSyntaxError(program.lexResWord, tok.lexeme);
+    while(tok.tokenType != EOFTOKEN){
+      tok = getNextToken();
+    }
+  }
 }
