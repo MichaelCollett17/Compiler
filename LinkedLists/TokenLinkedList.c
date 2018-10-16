@@ -4,7 +4,7 @@
 #include "../tokens.h"
 
 struct node *head = NULL;
-struct node *current = NULL;
+struct node *curr = NULL;
 
 void insert(int lineNo, char *lexeme, int tokenType, int attribute) {
    //create a link
@@ -38,6 +38,7 @@ void reverseTokens(struct node** AnotherHead){
 }
 
 void printList(FILE *tokFile) {
+  insert(EOF, "EOF", EOFTOKEN, 0);
   reverseTokens(&head);
   struct node *ptr = head;
   fprintf(tokFile, "%-12s\t%-20s\t%-12s\t%s\n", "Line No.", "Lexeme", "Token Type", "Attribute");
@@ -51,5 +52,14 @@ void printList(FILE *tokFile) {
     ptr = ptr -> next;
   }
   //print EOF
-  fprintf(tokFile, "%-12d\t%-20s\t%-12d\t%d\n", EOF, "EOF", EOFTOKEN, 0);
+  //fprintf(tokFile, "%-12d\t%-20s\t%-12d\t%d\n", EOF, "EOF", EOFTOKEN, 0);
+}
+
+struct node getNextToken(){
+  if(curr == NULL){
+    curr = head;
+  }
+  struct node *temp = curr;
+  curr = curr -> next;
+  return *temp;
 }

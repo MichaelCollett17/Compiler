@@ -133,7 +133,6 @@ struct numsOut numbers(int b, int end, char *buff, FILE *listFile){
               const char* from = buff;
               strncpy(lexeme, from+b, f-b);
               lexeme[f-b] = '\0';
-              printf("%s:%s\n","HERE", lexeme);
               struct machOut out = {f, 0, lexeme, SREAL, 0};
               struct numsOut numOut = {out, xx, yy, zz,lead1, trail2, lead3, state};
               return numOut;

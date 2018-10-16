@@ -43,7 +43,6 @@ struct machOut idres(int b, int end, char *buff, FILE *listFile){
       int key = addSymbol(lexeme);
       struct machOut out = {f, 0, lexeme, ID, 0};//ptrToSymbol table uses key 0+
       //printSymbols();
-      printf("For Adding: %s: %p\n", lexeme,(void *)(lexeme));
       return out;
     }
     else{

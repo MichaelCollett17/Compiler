@@ -18,3 +18,4 @@ div 41  78
 mod 41  79
 and 41  80
 not 42  0
+call 43 0

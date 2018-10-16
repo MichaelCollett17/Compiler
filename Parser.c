@@ -8,19 +8,32 @@
 #include "./LinkedLists/TokenLinkedList.h"
 #include "reservedWords.h"
 #include "LexicalAnalyzer.h"
+#include "./Productions/productions.h"
+
+FILE *listFile;
+
+void writeSyntaxError(char *expecting, char *received){
+  fprintf(listFile, "-SYNTAX ERROR-\n\tExpecting: %s\n\tReceived: %s\n",
+    expecting, received);
+}
+
+void parse(){
+  tok = getNextToken();
+  program();
+  match(EOFTOKEN, 0, "EOF");//match($)
+  return;
+}
 
 int main()
 {
   char *eof;
   FILE *rfp;
-  FILE *listFile;
   FILE *tokFile;
   char buff[72];
 
-  //rfp = fopen("./PascalExample.pas", "r");
-  rfp = fopen("./InputFiles/ShenoiFile.pas", "r");
-  listFile = fopen("./OutputFiles/ListingFileShenoi.txt", "w+");
-  tokFile = fopen("./OutputFiles/TokenFileShenoi.txt", "w+");
+  rfp = fopen("./InputFiles/ParserTesting.pas", "r");
+  listFile = fopen("./OutputFiles/ListingFileParserTest.txt", "w+");
+  tokFile = fopen("./OutputFiles/TokenFileParserTest.txt", "w+");
 
   loadReservedWords();
 
@@ -35,5 +48,7 @@ int main()
   }
   printList(tokFile);
   fclose(rfp);
+
+  parse();
   return 0;
 }
