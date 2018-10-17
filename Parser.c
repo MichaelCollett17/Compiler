@@ -11,6 +11,7 @@
 #include "./Productions/productions.h"
 
 FILE *listFile;
+char *eof;
 
 void writeSyntaxError(char *expecting, char *received){
   fprintf(listFile, "-SYNTAX ERROR-\n\tExpecting: %s\n\tReceived: %s\n",
@@ -26,7 +27,6 @@ void parse(){
 
 int main()
 {
-  char *eof;
   FILE *rfp;
   FILE *tokFile;
   char buff[72];
@@ -42,13 +42,12 @@ int main()
   while(eof!=NULL){
     printBuffer(buff,listFile,lineNum);
     machines(buff, listFile, lineNum);
+    //parse();
     eof = loadBuffer(buff,rfp);
     lineNum++;
     //break;
   }
   printList(tokFile);
   fclose(rfp);
-
-  parse();
   return 0;
 }

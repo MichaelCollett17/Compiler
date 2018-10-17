@@ -1,2 +1,4 @@
 1.	program myprog(this);
-2.	.
+2.	these are tests 1234.5
+3.	; . , ..
+4.	.

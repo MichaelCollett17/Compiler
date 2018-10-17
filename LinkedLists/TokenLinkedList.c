@@ -60,6 +60,12 @@ struct node getNextToken(){
     curr = head;
   }
   struct node *temp = curr;
-  curr = curr -> next;
-  return *temp;
+  struct node *nextCheck = curr -> next;
+  if(nextCheck != NULL){
+    curr = curr -> next;
+    return *temp;
+  }
+  else{
+    return *nextCheck;
+  }
 }
