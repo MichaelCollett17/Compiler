@@ -5,7 +5,8 @@
 
 #include "tokens.h"
 #include "./Machines/machines.h"
-#include "./LinkedLists/TokenLinkedList.h"
+//#include "./LinkedLists/TokenLinkedList.h"
+#include "./LinkedLists/TokenLLV2.h"
 #include "reservedWords.h"
 #include "LexicalAnalyzer.h"
 #include "./Productions/productions.h"

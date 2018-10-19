@@ -5,7 +5,8 @@
 
 #include "tokens.h"
 #include "./Machines/machines.h"
-#include "./LinkedLists/TokenLinkedList.h"
+//#include "./LinkedLists/TokenLinkedList.h"
+#include "./LinkedLists/TokenLLV2.h"
 #include "reservedWords.h"
 
 int stringLength(char *s){
@@ -18,11 +19,13 @@ int stringLength(char *s){
 int processMachineOutput(struct machOut out, int lineNum, int b){
     b = out.b;
     if(out.error>99){
-      insert(lineNum, out.lexeme, LEXERR, out.error);
+      //insert(lineNum, out.lexeme, LEXERR, out.error);
+      insertToken(lineNum, out.lexeme, LEXERR, out.error);
       //printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, LEXERR, out.error);
     }
     else{
-      insert(lineNum, out.lexeme, out.tokenType, out.attribute);
+      //insert(lineNum, out.lexeme, out.tokenType, out.attribute);
+      insertToken(lineNum, out.lexeme, out.tokenType, out.attribute);
       //printf("%d. %s\t%d\t%d\n", lineNum, out.lexeme, out.tokenType, out.attribute);
     }
     return b;

@@ -1,4 +1,5 @@
-1.	program myprog(this);
+1.	program myprogthrowanerror(this);
+LEXERR:     IDTOOLONG                     myprogthrowanerror
 2.	these are tests 1234.5
 3.	; . , ..
 4.	.

@@ -1,5 +1,5 @@
-#ifndef LINKEDLIST
-#define LINKEDLIST
+#ifndef TOKENLINKEDLIST
+#define TOKENLINKEDLIST
 
 struct node {
   int lineNo;

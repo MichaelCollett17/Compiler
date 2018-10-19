@@ -1,6 +1,6 @@
 #ifndef PRODUCTIONS
 #define PRODUCTIONS
-struct node tok;
+struct tokenNode tok;
 void program();
 void idlst();
 void match(int tokenToMatch, int attributeToMatch, char *lexeme);
