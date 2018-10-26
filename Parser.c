@@ -13,14 +13,42 @@
 
 FILE *listFile;
 char *eof;
+FILE *rfp;
+FILE *tokFile;
+char buff[72];
+int lineNum;
+
 
 void writeSyntaxError(char *expecting, char *received){
   fprintf(listFile, "-SYNTAX ERROR-\n\tExpecting: %s\n\tReceived: %s\n",
     expecting, received);
+  printf("-SYNTAX ERROR-\n\tExpecting: %s\n\tReceived: %s\n",
+    expecting, received);
+}
+
+void getToken(){
+  struct tokenNode check = getNextToken();
+  if(check.lineNo != -10){
+    tok = check;
+  }
+  else{
+    if(eof!=NULL){
+      eof = loadBuffer(buff,rfp);
+      lineNum++;
+      printBuffer(buff,listFile,lineNum);
+      machines(buff, listFile, lineNum);
+      getToken();//calls self because the previous call needed getToken still!
+    }
+    else{
+      //DELTE THIS WHOLE ELSE STATEMENT SHOULDN'T BE USEFUL ONCE DONE
+      printf("PARSE OVER\n");
+      insertToken(EOF, "EOF", EOFTOKEN, 0);
+    }
+  }
 }
 
 void parse(){
-  tok = getNextToken();
+  getToken();
   program();
   match(EOFTOKEN, 0, "EOF");//match($)
   return;
@@ -28,10 +56,6 @@ void parse(){
 
 int main()
 {
-  FILE *rfp;
-  FILE *tokFile;
-  char buff[72];
-
   rfp = fopen("./InputFiles/ParserTesting.pas", "r");
   listFile = fopen("./OutputFiles/ListingFileParserTest.txt", "w+");
   tokFile = fopen("./OutputFiles/TokenFileParserTest.txt", "w+");
@@ -39,13 +63,13 @@ int main()
   loadReservedWords();
 
   eof = loadBuffer(buff,rfp);
-  int lineNum = 1;
-  while(eof!=NULL){
+  lineNum = 1;
+  if(eof!=NULL){
     printBuffer(buff,listFile,lineNum);
     machines(buff, listFile, lineNum);
-    //parse();
-    eof = loadBuffer(buff,rfp);
-    lineNum++;
+    parse();
+    //eof = loadBuffer(buff,rfp);
+    //lineNum++;
     //break;
   }
   printList(tokFile);

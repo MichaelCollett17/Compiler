@@ -1,4 +1,2 @@
-program myprogthrowanerror(this);
-these are tests 1234.5
-; . , ..
-.
+program myprog(thiss);
+test 123.5 1 1 1 1 END

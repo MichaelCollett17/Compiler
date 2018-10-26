@@ -7,13 +7,13 @@
 
 void match(int tokenToMatch, int attributeToMatch, char *lexeme){
   if((tok.tokenType == tokenToMatch)&& (tok.attribute == attributeToMatch) &&(tok.tokenType != EOFTOKEN)){
-    tok = getNextToken();
+    getToken();
   }
   else if((tok.tokenType == tokenToMatch) && (tok.attribute == attributeToMatch) && (tok.tokenType == EOFTOKEN)){
     printf("TODO: END OF PARSE!");
   }
   else{
     writeSyntaxError(lexeme, tok.lexeme);
-    tok = getNextToken();
+    getToken();
   }
 }

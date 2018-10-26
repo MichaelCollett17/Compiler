@@ -10,6 +10,7 @@
 void program(){
   struct resWord program = getTokAndAtt("program");
   if(tok.tokenType == program.tokenResWord) {
+    printf("prog match: %s\n", tok.lexeme);
     match(program.tokenResWord, program.attributeResWord, program.lexResWord);
     match(ID, 0, "ID");
     match(GROUPING, LPAR, "(");
@@ -25,7 +26,7 @@ void program(){
     //synch
     writeSyntaxError(program.lexResWord, tok.lexeme);
     while(tok.tokenType != EOFTOKEN){
-      tok = getNextToken();
+      getToken();
     }
   }
 }

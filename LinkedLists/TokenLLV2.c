@@ -6,34 +6,24 @@
 
 struct tokenNode *tokenHead= NULL;
 struct tokenNode *tokenPrev = NULL;
-struct tokenNode *tokTmp = NULL;
-
-void insertHead(int lineNo, char *lexeme, int tokenType, int attribute) {
-  printf("%s\n", "insertHead");
-  tokenHead->lineNo = lineNo;
-  tokenHead->lexeme = lexeme;
-  tokenHead->tokenType = tokenType;
-  tokenHead->attribute = attribute;
-  tokenHead->next=NULL;
-  tokenPrev = tokenHead;
-}
+struct tokenNode *tokCurr = NULL;
+struct tokenNode *nullNode = NULL;
 
 void insertToken(int lineNo, char *lexeme, int tokenType, int attribute) {
-  printf("%s\n", tokenHead==NULL ? "true" : "false");
   if(tokenHead==NULL){
     tokenHead = (struct tokenNode*) malloc(sizeof(struct tokenNode));
+    nullNode = (struct tokenNode*) malloc(sizeof(struct tokenNode));
+    nullNode ->lineNo = -10;
     tokenHead->lineNo = lineNo;
     tokenHead->lexeme = lexeme;
     tokenHead->tokenType = tokenType;
     tokenHead->attribute = attribute;
     tokenHead->next=NULL;
     tokenPrev = tokenHead;
-    printf("Token prev: %s\n", tokenPrev->lexeme);
     return;
   }
   else{
     struct tokenNode *link = (struct tokenNode*) malloc(sizeof(struct tokenNode));
-    printf("Token prev else: %s\n", tokenPrev->lexeme);
     //link->key = key;
     link->lineNo = lineNo;
     link->lexeme = lexeme;
@@ -47,7 +37,7 @@ void insertToken(int lineNo, char *lexeme, int tokenType, int attribute) {
 }
 
 void printList(FILE *tokFile) {
-  insertToken(EOF, "EOF", EOFTOKEN, 0);
+  //insertToken(EOF, "EOF", EOFTOKEN, 0);
   struct tokenNode *ptr = tokenHead;
   fprintf(tokFile, "%-12s\t%-20s\t%-12s\t%s\n", "Line No.", "Lexeme", "Token Type", "Attribute");
   while(ptr != NULL){
@@ -62,16 +52,17 @@ void printList(FILE *tokFile) {
 }
 
 struct tokenNode getNextToken(){
-  if(tokTmp == NULL){
-    tokTmp = tokenHead;
+  if(tokCurr == NULL){
+    tokCurr = tokenHead;
+    return *tokCurr;
   }
-  struct tokenNode *temp = tokTmp;
-  struct tokenNode *nextCheck = tokTmp -> next;
-  if(nextCheck != NULL){
-    tokTmp = tokTmp -> next;
-    return *temp;
+  //struct tokenNode *temp = tokCurr;
+  printf("Current Tok:%s\n", tokCurr -> lexeme);
+  if(tokCurr -> next != NULL){
+    tokCurr = tokCurr -> next;
+    return *tokCurr;
   }
   else{
-    return *nextCheck;
+    return *nullNode;
   }
 }

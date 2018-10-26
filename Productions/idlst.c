@@ -16,7 +16,7 @@ void idlst(){
     writeSyntaxError("ID",tok.lexeme);
     while((tok.tokenType != EOFTOKEN) ||
     ((tok.tokenType == GROUPING) && (tok.attribute == RPAR))){
-      tok = getNextToken();
+      getToken();
     }
   }
 }

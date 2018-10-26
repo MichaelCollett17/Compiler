@@ -47,7 +47,6 @@ struct machOut idres(int b, int end, char *buff, FILE *listFile){
     }
     else{
       struct machOut out = {f, 0, check->lexeme, ID, 0};//ptrToSymbol table uses key 0+
-      printf("For Getting: %s: %p\n", check->lexeme,(void *)(check->lexeme));
       //printSymbols();
       return out;
     }
