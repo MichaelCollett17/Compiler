@@ -1,8 +1,0 @@
-1.	program myprog(thiss);
-2.	test 123.5 1 1 1 1 END
--SYNTAX ERROR-
-	Expecting: .
-	Received: test
--SYNTAX ERROR-
-	Expecting: EOF
-	Received: 123.5

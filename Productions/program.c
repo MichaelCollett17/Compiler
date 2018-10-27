@@ -10,17 +10,13 @@
 void program(){
   struct resWord program = getTokAndAtt("program");
   if(tok.tokenType == program.tokenResWord) {
-    printf("prog match: %s\n", tok.lexeme);
     match(program.tokenResWord, program.attributeResWord, program.lexResWord);
     match(ID, 0, "ID");
     match(GROUPING, LPAR, "(");
     idlst();
     match(GROUPING, RPAR, ")");
     match(PUNCTUATION,SEMICOLON, ";");
-    //declarations();
-    //subdeclarations();
-    //compound_statement();
-    match(PUNCTUATION, PERIOD, ".");
+    program_prime();
   }
   else{
     //synch

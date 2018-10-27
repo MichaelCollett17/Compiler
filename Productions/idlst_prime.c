@@ -7,10 +7,14 @@
 #include "../reservedWords.h"
 #include "../Parser.h"
 
-void idlst(){
-  if(tok.tokenType == ID){
+void idlst_prime(){
+  if((tok.tokenType == PUNCTUATION) && (tok.attribute == COMMA)){
+    match(PUNCTUATION, COMMA, ",");
     match(ID, 0, "ID");
     idlst_prime();
+  }
+  else if((tok.tokenType == GROUPING)&&(tok.attribute == RPAR)){
+    return;
   }
   else{
     writeSyntaxError("ID",tok.lexeme);
