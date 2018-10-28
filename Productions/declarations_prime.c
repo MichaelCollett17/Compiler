@@ -16,7 +16,7 @@ void declarations_prime(){
     match(TYPE, 0, ":");
     //type();
     match(PUNCTUATION,SEMICOLON, ";");
-    declarations_prime();
+    declarations_prime(); 
   }
   else if(((tok.tokenType == begin.tokenResWord)
     &&(tok.attribute == begin.attributeResWord)) || (tok.tokenType == procedure.tokenResWord)){
