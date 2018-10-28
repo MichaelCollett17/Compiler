@@ -57,9 +57,9 @@ struct tokenNode getNextToken(){
     return *tokCurr;
   }
   //struct tokenNode *temp = tokCurr;
-  printf("Current Tok:%s\n", tokCurr -> lexeme);
   if(tokCurr -> next != NULL){
     tokCurr = tokCurr -> next;
+    printf("Current Tok:%s\n", tokCurr -> lexeme);
     return *tokCurr;
   }
   else{

@@ -20,7 +20,7 @@ int lineNum;
 
 
 void writeSyntaxError(char *expecting, char *received){
-  fprintf(listFile, "-SYNTAX ERROR-\n\tExpecting: %s\n\tReceived: %s\n",
+  fprintf(listFile, "-SYNTAX ERROR-\n\tExpecting one of: %s\n\tReceived: %s\n",
     expecting, received);
   printf("-SYNTAX ERROR-\n\tExpecting: %s\n\tReceived: %s\n",
     expecting, received);
