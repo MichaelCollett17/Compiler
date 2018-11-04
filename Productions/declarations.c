@@ -12,7 +12,7 @@ void declarations(){
     match(var.tokenResWord, var.attributeResWord, "var");
     match(ID, 0, "ID");
     match(TYPE, 0, ":");
-    //type();
+    type();
     match(PUNCTUATION,SEMICOLON, ";");
     declarations_prime();
   }

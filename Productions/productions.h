@@ -11,5 +11,8 @@ void subdeclarations();
 void subdeclarations_prime();
 void declarations();
 void declarations_prime();
+void type();
+void matchNum();
+void standard_type();
 
 #endif

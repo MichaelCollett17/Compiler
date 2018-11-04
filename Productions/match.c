@@ -17,3 +17,13 @@ void match(int tokenToMatch, int attributeToMatch, char *lexeme){
     getToken();
   }
 }
+
+void matchNum(){
+  if((tok.tokenType == INT) || (tok.tokenType == SREAL) || (tok.tokenType == LREAL)){
+    getToken();
+  }
+  else{
+    writeSyntaxError("a Number", tok.lexeme);
+    getToken();
+  }
+}

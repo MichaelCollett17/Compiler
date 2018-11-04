@@ -14,16 +14,16 @@ void declarations_prime(){
     match(var.tokenResWord, var.attributeResWord, "var");
     match(ID, 0, "ID");
     match(TYPE, 0, ":");
-    //type();
+    type();
     match(PUNCTUATION,SEMICOLON, ";");
-    declarations_prime(); 
+    declarations_prime();
   }
   else if(((tok.tokenType == begin.tokenResWord)
     &&(tok.attribute == begin.attributeResWord)) || (tok.tokenType == procedure.tokenResWord)){
       return;
   }
   else{
-    writeSyntaxError(var.lexResWord, tok.lexeme);
+    writeSyntaxError("var begin or procedure", tok.lexeme);
     while(tok.tokenType != EOFTOKEN && (!((tok.tokenType == begin.tokenResWord)
       &&(tok.attribute == begin.attributeResWord))) && (!(tok.tokenType == procedure.tokenResWord))){
       getToken();
