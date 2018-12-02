@@ -23,7 +23,7 @@ void declarations_prime(){
       return;
   }
   else{
-    writeSyntaxError("var begin or procedure", tok.lexeme);
+    writeSyntaxError("begin or procedure", tok.lexeme);
     while(tok.tokenType != EOFTOKEN && (!((tok.tokenType == begin.tokenResWord)
       &&(tok.attribute == begin.attributeResWord))) && (!(tok.tokenType == procedure.tokenResWord))){
       getToken();

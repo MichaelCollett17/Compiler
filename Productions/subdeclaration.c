@@ -1,21 +1,20 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "../tokens.h"
 #include "../LinkedLists/TokenLLV2.h"
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
 
-void subdeclarations(){
+void subdeclaration(){
   struct resWord procedure = getTokAndAtt("procedure");
   if(tok.tokenType == procedure.tokenResWord){
-    subdeclaration();
-    match(PUNCTUATION,SEMICOLON, ";");
-    subdeclarations_prime();
+    subprogram_head();
+    subdeclaration_prime();
   }
   else{
-    struct resWord begin = getTokAndAtt("begin");
     writeSyntaxError("procedure", tok.lexeme);
-    while(tok.tokenType != EOFTOKEN && !((tok.tokenType == begin.tokenResWord)&&(tok.attribute == begin.attributeResWord))){
+    while(tok.tokenType != EOFTOKEN && (!(tok.attribute==SEMICOLON))){
       getToken();
     }
   }

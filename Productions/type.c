@@ -10,6 +10,7 @@ void type(){
   struct resWord array = getTokAndAtt("array");
   struct resWord real = getTokAndAtt("real");
   struct resWord integer = getTokAndAtt("integer");
+  struct resWord of = getTokAndAtt("of");
   if(tok.tokenType == array.tokenResWord){
     match(array.tokenResWord, array.attributeResWord, "array");
     match(GROUPING, LBRACK, "[");
@@ -17,6 +18,7 @@ void type(){
     match(ARRAY, 0, "..");
     matchNum();
     match(GROUPING, RBRACK, "]");
+    match(of.tokenResWord, of.attributeResWord, of.lexResWord);
     standard_type();
   }
   else if((tok.tokenType == real.tokenResWord) ||

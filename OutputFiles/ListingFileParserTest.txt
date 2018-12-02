@@ -1,16 +1,26 @@
 1.	program myprog(this, this, hi, ellie);
 2.	var x: integer;
-3.	var c: array [2..3]
-4.	var c: array [2..3]
+3.	var c: array [2 .. 3] of real;
+4.	procedure proc;
+5.	procedure proc;
 -SYNTAX ERROR-
-	Expecting one of: array, real or integer
-	Received: var
+	Expecting one of: procedure, begin or var
+	Received: ;
+-SYNTAX ERROR-
+	Expecting one of: procedure or begin
+	Received: EOF
+-SYNTAX ERROR-
+	Expecting one of: begin
+	Received: EOF
 -SYNTAX ERROR-
 	Expecting one of: ;
 	Received: EOF
 -SYNTAX ERROR-
-	Expecting one of: var begin or procedure
+	Expecting one of: procedure or begin
 	Received: EOF
 -SYNTAX ERROR-
-	Expecting one of: procedure or begin
+	Expecting one of: begin
+	Received: EOF
+-SYNTAX ERROR-
+	Expecting one of: .
 	Received: EOF

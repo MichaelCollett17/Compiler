@@ -14,5 +14,23 @@ void declarations_prime();
 void type();
 void matchNum();
 void standard_type();
+void compound_statement();
+void compound_statement_prime();
+void subdeclaration();
+void subdeclaration_prime();
+void subdeclaration_prime_prime();
+void subdeclaration_prime_prime();
+void subprogram_head();
+void subprogram_head_prime();
+void arguments();
+void parameter_list();
+void parameter_list_prime();
+void optional_statements();
+void statement_list();
+void statement_list_prime();
+void statement();
+void statement_prime();
+void variable();
+void variable_prime();
 
 #endif

@@ -17,7 +17,7 @@ void standard_type(){
   }
   else{
     //synch
-    writeSyntaxError("array, real or integer", tok.lexeme);
+    writeSyntaxError("real or integer", tok.lexeme);
     while(tok.tokenType != EOFTOKEN && (!((tok.tokenType == GROUPING) && (tok.attribute == RPAR))) && (!((tok.tokenType == PUNCTUATION) && (tok.attribute == SEMICOLON)))){
       getToken();
     }

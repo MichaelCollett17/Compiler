@@ -1,3 +1,4 @@
 program myprog(this, this, hi, ellie);
 var x: integer;
-var c: array [2..3]
+var c: array [2 .. 3] of real;
+procedure proc;

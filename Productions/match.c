@@ -23,7 +23,7 @@ void matchNum(){
     getToken();
   }
   else{
-    writeSyntaxError("a Number", tok.lexeme);
+    writeSyntaxError("a number", tok.lexeme);
     getToken();
   }
 }
