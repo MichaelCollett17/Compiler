@@ -6,20 +6,15 @@
 #include "../reservedWords.h"
 #include "../Parser.h"
 
-void term_prime(){
+void factor_prime(){
   struct resWord do_ = getTokAndAtt("do");
   struct resWord then = getTokAndAtt("then");
   struct resWord end = getTokAndAtt("end");
   struct resWord else_ = getTokAndAtt("else");
-  if(tok.tokenType==MULOP){
-    if(tok.attribute==MULT){
-      match(MULOP,MULT,"*");
-    }
-    else{
-      match(MULOP,DIV,"/");
-    }
-    factor();
-    term_prime();
+  if((tok.tokenType == GROUPING) && (tok.attribute == LBRACK)){
+    match(GROUPING,LBRACK,"[");
+    expression();
+    match(GROUPING,RBRACK,"]");
   }
   else if((((tok.tokenType == GROUPING) && (tok.attribute == RBRACK))) ||
     (((tok.tokenType == do_.tokenResWord) && (tok.attribute == do_.attributeResWord))) ||
@@ -30,11 +25,12 @@ void term_prime(){
     (((tok.tokenType == end.tokenResWord) && (tok.attribute == end.attributeResWord))) ||
     (((tok.tokenType == else_.tokenResWord) && (tok.attribute == else_.attributeResWord))) ||
     ((tok.tokenType == RELOP)) ||
-    (tok.tokenType == ADDOP)){
-    return;
+    (tok.tokenType == ADDOP) ||
+    (tok.tokenType == MULOP)){
+      return;
   }
   else{
-    writeSyntaxError("mulop addop relop do then ] , ) ; end else", tok.lexeme);
+    writeSyntaxError("[ mulop addop relop do then ] , ) ; end else", tok.lexeme);
     while((tok.tokenType != EOFTOKEN) &&
       (!((tok.tokenType == GROUPING) && (tok.attribute == RBRACK))) &&
       (!((tok.tokenType == do_.tokenResWord) && (tok.attribute == do_.attributeResWord))) &&
@@ -45,7 +41,8 @@ void term_prime(){
       (!((tok.tokenType == end.tokenResWord) && (tok.attribute == end.attributeResWord))) &&
       (!((tok.tokenType == else_.tokenResWord) && (tok.attribute == else_.attributeResWord))) &&
       ((tok.tokenType != RELOP)) &&
-      (tok.tokenType != ADDOP)){
+      (tok.tokenType != ADDOP) &&
+      (tok.tokenType != MULOP)){
         getToken();
     }
   }

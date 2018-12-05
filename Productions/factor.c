@@ -6,14 +6,23 @@
 #include "../reservedWords.h"
 #include "../Parser.h"
 
-void term(){
+void factor(){
   struct resWord not = getTokAndAtt("not");
-  //id num ( not
-  if((tok.tokenType==ID) || (tok.tokenType == INT) || (tok.tokenType == SREAL)
-  || (tok.tokenType == LREAL) || ((tok.tokenType == GROUPING) && (tok.attribute == LPAR))
-  || ((tok.tokenType == not.tokenResWord) && (tok.attribute == not.attributeResWord))){
+  if(tok.tokenType == ID){
+    match(ID, 0, "ID");
+    factor_prime();
+  }
+  else if((tok.tokenType == INT) || (tok.tokenType == SREAL) || (tok.tokenType == LREAL) ){
+    matchNum();
+  }
+  else if((tok.tokenType == GROUPING) && (tok.attribute == LPAR)){
+    match(GROUPING,LPAR,"(");
+    expression();
+    match(GROUPING,RPAR,")");
+  }
+  else if((tok.tokenType == not.tokenResWord) && (tok.attribute == not.attributeResWord)){
+    match(not.tokenResWord, not.attributeResWord, not.lexResWord);
     factor();
-    term_prime();
   }
   else{
     writeSyntaxError("id num not (", tok.lexeme);
@@ -31,7 +40,8 @@ void term(){
       (!((tok.tokenType == end.tokenResWord) && (tok.attribute == end.attributeResWord))) &&
       (!((tok.tokenType == else_.tokenResWord) && (tok.attribute == else_.attributeResWord))) &&
       ((tok.tokenType != RELOP)) &&
-      (tok.tokenType != ADDOP)){
+      (tok.tokenType != ADDOP) &&
+      (tok.tokenType != MULOP)){
         getToken();
     }
   }

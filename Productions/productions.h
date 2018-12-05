@@ -42,5 +42,7 @@ void simple_expression();
 void simple_expression_prime();
 void term();
 void term_prime();
+void factor();
+void factor_prime();
 
 #endif
