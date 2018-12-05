@@ -9,7 +9,7 @@
 void variable_prime(){
   if((tok.tokenType == GROUPING) && (tok.attribute == LBRACK)){
     match(GROUPING,LBRACK, "[");
-    //expression();
+    expression();
     match(GROUPING,RBRACK, "]");
   }
   else if(tok.tokenType == ASSIGNOP){

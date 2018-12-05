@@ -32,5 +32,15 @@ void statement();
 void statement_prime();
 void variable();
 void variable_prime();
+void procedure_statement();
+void procedure_statement_prime();
+void expression_list();
+void expression_list_prime();
+void expression();
+void expression_prime();
+void simple_expression();
+void simple_expression_prime();
+void term();
+void term_prime();
 
 #endif

@@ -13,13 +13,13 @@ void statement(){
   struct resWord if_ = getTokAndAtt("if");
   //id
   if(tok.tokenType == ID){
-    //variable();
+    variable();
     match(ASSIGNOP, 0, ":=");
-    //expression();
+    expression();
   }
   //call
   else if(tok.tokenType==call.tokenResWord){
-    //procedure_statement();
+    procedure_statement();
   }
   //begin
   else if((tok.tokenType == begin.tokenResWord) && (tok.attribute == begin.attributeResWord)){
@@ -29,7 +29,7 @@ void statement(){
   else if((tok.tokenType == while_.tokenResWord) && (tok.attribute == while_.attributeResWord)){
     struct resWord do_ = getTokAndAtt("do");
     match(while_.tokenResWord, while_.attributeResWord,while_.lexResWord);
-    //expression();
+    expression();
     match(do_.tokenResWord, do_.tokenResWord, do_.lexResWord);
     statement();
   }
@@ -37,7 +37,7 @@ void statement(){
   else if((tok.tokenType == if_.tokenResWord) && (tok.attribute == if_.attributeResWord)){
     struct resWord then = getTokAndAtt("then");
     match(if_.tokenResWord, if_.attributeResWord, if_.lexResWord);
-    //expression();
+    expression();
     match(then.tokenResWord,then.attributeResWord,then.lexResWord);
     statement();
     statement_prime();
