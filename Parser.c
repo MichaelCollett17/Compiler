@@ -56,9 +56,9 @@ void parse(){
 
 int main()
 {
-  rfp = fopen("./InputFiles/ParserTesting.pas", "r");
-  listFile = fopen("./OutputFiles/ListingFileParserTest.txt", "w+");
-  tokFile = fopen("./OutputFiles/TokenFileParserTest.txt", "w+");
+  rfp = fopen("./InputFiles/fib.pas", "r");
+  listFile = fopen("./OutputFiles/fibTest.txt", "w+");
+  tokFile = fopen("./OutputFiles/fibTest.txt", "w+");
 
   loadReservedWords();
 

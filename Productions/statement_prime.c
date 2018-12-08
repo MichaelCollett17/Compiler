@@ -20,7 +20,7 @@ void statement_prime(){
   }
   else{
     //; end else
-    writeSyntaxError("else, end",tok.lexeme);
+    writeSyntaxError("else end ; else",tok.lexeme);
     while((tok.tokenType != EOFTOKEN) &&
     (!((tok.tokenType == end.tokenResWord) && (tok.attribute == end.attributeResWord)))
     && (!((tok.tokenType == else_.tokenResWord) && (tok.attribute == else_.attributeResWord)))

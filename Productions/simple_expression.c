@@ -17,7 +17,7 @@ void simple_expression(){
   }
   else if((tok.tokenType == ADDOP && tok.attribute == ADD)
   || (tok.tokenType == ADDOP && tok.attribute == SUB)){
-    //sign();
+    sign();
     term();
     simple_expression_prime();
   }

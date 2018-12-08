@@ -30,7 +30,7 @@ void statement(){
     struct resWord do_ = getTokAndAtt("do");
     match(while_.tokenResWord, while_.attributeResWord,while_.lexResWord);
     expression();
-    match(do_.tokenResWord, do_.tokenResWord, do_.lexResWord);
+    match(do_.tokenResWord, do_.attributeResWord, do_.lexResWord);
     statement();
   }
   //if

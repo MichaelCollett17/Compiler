@@ -13,9 +13,9 @@ then  39  73
 else  39  74
 while 40  75
 do  40  76
-or  41  77
-div 41  78
-mod 41  79
-and 41  80
+or  9  77
+div 8  78
+mod 8  79
+and 8  80
 not 42  0
 call 43 0

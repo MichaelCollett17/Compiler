@@ -11,9 +11,21 @@ void term_prime(){
   struct resWord then = getTokAndAtt("then");
   struct resWord end = getTokAndAtt("end");
   struct resWord else_ = getTokAndAtt("else");
+  struct resWord div_ = getTokAndAtt("div");
+  struct resWord mod_ = getTokAndAtt("mod");
+  struct resWord and_ = getTokAndAtt("and");
   if(tok.tokenType==MULOP){
     if(tok.attribute==MULT){
       match(MULOP,MULT,"*");
+    }
+    else if(tok.attribute == div_.attributeResWord){
+      match(div_.tokenResWord,div_.attributeResWord,div_.lexResWord);
+    }
+    else if(tok.attribute == mod_.attributeResWord){
+      match(mod_.tokenResWord,mod_.attributeResWord,mod_.lexResWord);
+    }
+    else if(tok.attribute == and_.attributeResWord){
+      match(and_.tokenResWord,and_.attributeResWord,and_.lexResWord);
     }
     else{
       match(MULOP,DIV,"/");

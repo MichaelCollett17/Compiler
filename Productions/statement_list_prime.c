@@ -17,7 +17,7 @@ void statement_list_prime(){
     return;
   }
   else{
-    writeSyntaxError("ID, call, begin, while, if",tok.lexeme);
+    writeSyntaxError("; end",tok.lexeme);
     while((tok.tokenType != EOFTOKEN) &&
     !((tok.tokenType == end.tokenResWord) && (tok.attribute == end.attributeResWord))){
       getToken();

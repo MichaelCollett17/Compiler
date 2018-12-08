@@ -1,0 +1,30 @@
+1.	program test (input, output);
+2.	 var a : integer;
+3.	 var b : real;
+4.	 var c : array [1..2] of integer;
+5.	
+6.	 procedure fun1(x:integer; y:real;
+7.	                 z:array [1..2] of integer;
+8.	                 q: real) : integer;
+-SYNTAX ERROR-
+	Expecting one of: ;
+	Received: :
+-SYNTAX ERROR-
+	Expecting one of: procedure, begin or var
+	Received: integer
+9.	   var d: integer;
+-SYNTAX ERROR-
+	Expecting one of: procedure or begin
+	Received: var
+10.	   begin
+11.	     a:= 2;
+-SYNTAX ERROR-
+	Expecting one of: id call begin while if end
+	Received: a
+-SYNTAX ERROR-
+	Expecting one of: .
+	Received: ;
+12.	     z[a] := 4;
+-SYNTAX ERROR-
+	Expecting one of: EOF
+	Received: z

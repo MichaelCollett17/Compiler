@@ -18,7 +18,7 @@ void parameter_list_prime(){
     return;
   }
   else{
-    writeSyntaxError("ID",tok.lexeme);
+    writeSyntaxError("; )",tok.lexeme);
     while((tok.tokenType != EOFTOKEN) &&
     !((tok.tokenType == GROUPING) && (tok.attribute == RPAR))){
       getToken();

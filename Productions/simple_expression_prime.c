@@ -11,9 +11,13 @@ void simple_expression_prime(){
   struct resWord then = getTokAndAtt("then");
   struct resWord end = getTokAndAtt("end");
   struct resWord else_ = getTokAndAtt("else");
+  struct resWord or_ = getTokAndAtt("or");
   if(tok.tokenType == ADDOP){
     if(tok.attribute == ADD){
       match(ADDOP, ADD, "+");
+    }
+    else if(tok.attribute == or_.attributeResWord){
+      match(or_.tokenResWord,or_.attributeResWord, or_.lexResWord);
     }
     else{
       match(ADDOP, SUB, "-");
