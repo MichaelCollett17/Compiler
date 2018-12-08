@@ -34,16 +34,22 @@ void getToken(){
   else{
     if(eof!=NULL){
       eof = loadBuffer(buff,rfp);
-      lineNum++;
-      printBuffer(buff,listFile,lineNum);
-      machines(buff, listFile, lineNum);
-      getToken();//calls self because the previous call needed getToken still!
+      if(eof!=NULL){
+        lineNum++;
+        printBuffer(buff,listFile,lineNum);
+        machines(buff, listFile, lineNum);
+        getToken();//calls self because the previous call needed getToken still!
+      }
+      else{
+        printf("PARSE OVER 1\n");
+        insertToken(EOF, "EOF", EOFTOKEN, 0);
+        tok = getNextToken();
+      }
     }
-    else{
-      //DELTE THIS WHOLE ELSE STATEMENT SHOULDN'T BE USEFUL ONCE DONE
-      printf("PARSE OVER\n");
-      insertToken(EOF, "EOF", EOFTOKEN, 0);
-    }
+    // else{
+    //   printf("PARSE OVER 2\n");
+    //   //insertToken(EOF, "EOF", EOFTOKEN, 0);
+    // }
   }
 }
 
@@ -57,8 +63,8 @@ void parse(){
 int main()
 {
   rfp = fopen("./InputFiles/fib.pas", "r");
-  listFile = fopen("./OutputFiles/fibTest.txt", "w+");
-  tokFile = fopen("./OutputFiles/fibTest.txt", "w+");
+  listFile = fopen("./OutputFiles/fibTestlist.txt", "w+");
+  tokFile = fopen("./OutputFiles/fibTesttok.txt", "w+");
 
   loadReservedWords();
 

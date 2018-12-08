@@ -12,5 +12,6 @@ struct tokenNode {
 void insertToken(int lineNo, char *lexeme, int tokenType, int attribute);
 void printList(FILE *tokFile);
 struct tokenNode getNextToken();
+//void setEOF();
 
 #endif
