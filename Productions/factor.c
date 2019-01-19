@@ -5,24 +5,40 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
-void factor(){
+int factor(){
   struct resWord not = getTokAndAtt("not");
   if(tok.tokenType == ID){
+    idtype = getType(tok.lexeme);
     match(ID, 0, "ID");
-    factor_prime();
+    int fac_prime_type = factor_prime(idtype);
+    return fac_prime_type;
   }
   else if((tok.tokenType == INT) || (tok.tokenType == SREAL) || (tok.tokenType == LREAL) ){
+    int type = INT;
+    if((tok.tokenType == SREAL) || (tok.tokenType == LREAL)){
+      type = REAL;
+    }
     matchNum();
+    return type;
   }
   else if((tok.tokenType == GROUPING) && (tok.attribute == LPAR)){
     match(GROUPING,LPAR,"(");
-    expression();
+    int type = expression();
     match(GROUPING,RPAR,")");
+    return type;
   }
   else if((tok.tokenType == not.tokenResWord) && (tok.attribute == not.attributeResWord)){
     match(not.tokenResWord, not.attributeResWord, not.lexResWord);
-    factor();
+    int type = factor();
+    if(type == BOOL){
+      return type;
+    }
+    else{
+      writeSemanticError("a boolean must follow *not*");
+      return ERR;
+    }
   }
   else{
     writeSyntaxError("id num not (", tok.lexeme);
@@ -44,5 +60,6 @@ void factor(){
       (tok.tokenType != MULOP)){
         getToken();
     }
+    return ERR;
   }
 }

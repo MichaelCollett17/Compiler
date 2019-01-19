@@ -6,15 +6,38 @@
 #include "../reservedWords.h"
 #include "../Parser.h"
 
-void factor_prime(){
+int factor_prime(int i){
   struct resWord do_ = getTokAndAtt("do");
   struct resWord then = getTokAndAtt("then");
   struct resWord end = getTokAndAtt("end");
   struct resWord else_ = getTokAndAtt("else");
   if((tok.tokenType == GROUPING) && (tok.attribute == LBRACK)){
     match(GROUPING,LBRACK,"[");
-    expression();
+    int etype = expression();
     match(GROUPING,RBRACK,"]");
+
+    //Semantics
+    if(etype == INT){
+      if(i == AINT){
+        return INT;
+      }
+      else if(i == AREAL){
+        return REAL;
+      }
+      else{
+        if(i != ERR){
+          writeSemanticError("Not of type array");
+        }
+        return ERR;
+      }
+    }
+    else if(etype == ERR){
+      return etype;
+    }
+    else{
+      writeSemanticError("Array access requires an integer");
+      return ERR;
+    }
   }
   else if((((tok.tokenType == GROUPING) && (tok.attribute == RBRACK))) ||
     (((tok.tokenType == do_.tokenResWord) && (tok.attribute == do_.attributeResWord))) ||
@@ -27,7 +50,7 @@ void factor_prime(){
     ((tok.tokenType == RELOP)) ||
     (tok.tokenType == ADDOP) ||
     (tok.tokenType == MULOP)){
-      return;
+      return i;
   }
   else{
     writeSyntaxError("[ mulop addop relop do then ] , ) ; end else", tok.lexeme);
@@ -45,5 +68,6 @@ void factor_prime(){
       (tok.tokenType != MULOP)){
         getToken();
     }
+    return ERR;
   }
 }

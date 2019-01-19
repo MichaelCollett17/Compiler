@@ -48,4 +48,16 @@
 #define LREAL3TOOLONG 110
 //eof
 #define EOFTOKEN 20
+//the tokens for
+#define ERR 200
+#define REAL 201
+#define INT 202
+#define BOOL 203
+#define AINT 204
+#define AREAL 205
+#define PGNAME 206
+#define PPNAME 207
+#define PGPARAM 208
+#define PPPARAM 209
+
 #endif

@@ -26,6 +26,11 @@ void writeSyntaxError(char *expecting, char *received){
     expecting, received);
 }
 
+void writeSemanticError(char *error){
+  fprintf(listFile, "-SEMANTIC ERROR-\n\t: %s\n", error);
+  printf("-SEMANTIC ERROR-\n\t: %s\n", error);
+}
+
 void getToken(){
   struct tokenNode check = getNextToken();
   if(check.lineNo != -10){
@@ -62,9 +67,9 @@ void parse(){
 
 int main()
 {
-  rfp = fopen("./InputFiles/fiberror.pas", "r");
-  listFile = fopen("./OutputFiles/fiberrorTestlist.txt", "w+");
-  tokFile = fopen("./OutputFiles/fiberrorTesttok.txt", "w+");
+  rfp = fopen("./InputFiles/fib.pas", "r");
+  listFile = fopen("./OutputFiles/fibTestlist.txt", "w+");
+  tokFile = fopen("./OutputFiles/fibTesttok.txt", "w+");
 
   loadReservedWords();
 
