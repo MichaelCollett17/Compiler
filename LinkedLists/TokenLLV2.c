@@ -66,7 +66,3 @@ struct tokenNode getNextToken(){
     return *nullNode;
   }
 }
-
-// void setEOF(){
-//   tokCurr
-// }

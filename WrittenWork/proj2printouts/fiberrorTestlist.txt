@@ -1,0 +1,65 @@
+1.	program fib(input, output);
+2.	var n: integer; var p: integer;
+3.	var q: real;
+4.	var numsArray : array [13..12] of integer;
+5.	
+6.	procedure fib(a : integer; b : real; c : real);
+7.	  begin
+8.	      if a <= 1 then fib := c
+9.	      else call fib(a - 1, c, b + c)
+10.	  end;
+11.	
+12.	procedure fib2(a : integer)
+13.	  var b : integer; var c : integer; var sum : integer;
+-SYNTAX ERROR-
+	Expecting one of: ;
+	Received: var
+-SYNTAX ERROR-
+	Expecting one of: procedure, begin or var
+	Received: b
+-SYNTAX ERROR-
+	Expecting one of: procedure or begin
+	Received: var
+14.	  procedure rawr3(b : real);
+15.	    var q : integer;
+16.	
+17.	      q := b + 2.0;
+18.	      call fib2(q)
+19.	    end;
+20.	  begin
+21.	    a := aasdlfjlwkjerjkwle - 1;
+LEXERR:     IDTOOLONG                     aasdlfjlwkjerjkwle
+-SYNTAX ERROR-
+	Expecting one of: ID, num, (, not +, -
+	Received: aasdlfjlwkjerjkwle
+22.	    b := 0;
+23.	    sum := 1;
+24.	    c := b;
+25.	    while (a________ > 0) do
+LEXERR:     UnrecognizedSymbol            _
+LEXERR:     UnrecognizedSymbol            _
+LEXERR:     UnrecognizedSymbol            _
+LEXERR:     UnrecognizedSymbol            _
+LEXERR:     UnrecognizedSymbol            _
+LEXERR:     UnrecognizedSymbol            _
+LEXERR:     UnrecognizedSymbol            _
+LEXERR:     UnrecognizedSymbol            _
+-SYNTAX ERROR-
+	Expecting one of: [ mulop addop relop do then ] , ) ; end else
+	Received: _
+26.	      begin
+27.	        a := a - 1;
+28.	        b := sum;
+29.	        sum := c + sum;
+30.	        c := b
+31.	      end;
+32.	    fib2 := sum
+33.	  end;
+-SYNTAX ERROR-
+	Expecting one of: .
+	Received: ;
+34.	
+35.	procedure init;
+-SYNTAX ERROR-
+	Expecting one of: EOF
+	Received: procedure

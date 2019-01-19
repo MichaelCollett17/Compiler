@@ -11,7 +11,7 @@ procedure fib(a : integer; b : real; c : real);
 
 procedure fib2(a : integer);
   var b : integer; var c : integer; var sum : integer;
-  procedure meow3(b : real);
+  procedure rawr3(b : real);
     var q : integer;
     begin
       q := b + 2.0;
@@ -43,7 +43,7 @@ procedure init;
 
 begin
     call init;
-    call meow3(34);
+    call rawr3(34);
     call writeln(+6*q/p + 4);
     call writeln(fib2*n);
     call writeln(numsArray[3] mod 15)

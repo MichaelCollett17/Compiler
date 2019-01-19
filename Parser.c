@@ -62,9 +62,9 @@ void parse(){
 
 int main()
 {
-  rfp = fopen("./InputFiles/fib.pas", "r");
-  listFile = fopen("./OutputFiles/fibTestlist.txt", "w+");
-  tokFile = fopen("./OutputFiles/fibTesttok.txt", "w+");
+  rfp = fopen("./InputFiles/fiberror.pas", "r");
+  listFile = fopen("./OutputFiles/fiberrorTestlist.txt", "w+");
+  tokFile = fopen("./OutputFiles/fiberrorTesttok.txt", "w+");
 
   loadReservedWords();
 
