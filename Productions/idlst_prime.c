@@ -5,11 +5,13 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void idlst_prime(){
   if((tok.tokenType == PUNCTUATION) && (tok.attribute == COMMA)){
     match(PUNCTUATION, COMMA, ",");
-    match(ID, 0, "ID");
+    char *id_lex = match(ID, 0, "ID");
+    checkAddBlueNode(id_lex, PGPARAM);
     idlst_prime();
   }
   else if((tok.tokenType == GROUPING)&&(tok.attribute == RPAR)){

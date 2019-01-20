@@ -17,9 +17,9 @@ int factor_prime(int i){
     match(GROUPING,RBRACK,"]");
 
     //Semantics
-    if(etype == INT){
+    if(etype == INTEGER){
       if(i == AINT){
-        return INT;
+        return INTEGER;
       }
       else if(i == AREAL){
         return REAL;

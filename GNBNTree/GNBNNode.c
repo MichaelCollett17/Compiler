@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "./GNBNNode.h"
+#include <stdlib.h>
+
 
 struct gbnode *gnpointer = NULL;
 struct gbnode *eye = NULL;
 struct gbnode *progHead = NULL;
 
-void checkAddBlueNode(){
+void checkAddBlueNode(char *lex_in, int type){
 
 }
 
-void checkAddGreenNode(char *lex_in, char *type){
+void checkAddGreenNode(char *lex_in, int type){
   if(progHead == NULL){
     progHead = (struct gbnode*) malloc(sizeof(struct gbnode));
     progHead->borg = 1;

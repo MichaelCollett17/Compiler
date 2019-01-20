@@ -5,6 +5,7 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void declarations_prime(){
   struct resWord var = getTokAndAtt("var");
@@ -12,9 +13,14 @@ void declarations_prime(){
   struct resWord begin = getTokAndAtt("begin");
   if(tok.tokenType ==var.tokenResWord){
     match(var.tokenResWord, var.attributeResWord, "var");
-    match(ID, 0, "ID");
+    char *id_lex = match(ID, 0, "ID");
     match(TYPE, 0, ":");
-    type();
+    struct tw type_width = type();
+    //semstart
+    int type_ = type_width.t;
+    checkAddBlueNode(id_lex,type_);
+    offset = offset + type_width.w;
+    //semend
     match(PUNCTUATION,SEMICOLON, ";");
     declarations_prime();
   }

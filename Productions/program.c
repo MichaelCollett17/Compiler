@@ -6,13 +6,18 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void program(){
   struct resWord program = getTokAndAtt("program");
   if(tok.tokenType == program.tokenResWord) {
     match(program.tokenResWord, program.attributeResWord, program.lexResWord);
-    match(ID, 0, "ID");
+    char *idlex = match(ID, 0, "ID");
     match(GROUPING, LPAR, "(");
+    //semantic start
+    offset = 0;//may need to be int offset!
+    checkAddGreenNode(idlex, PGNAME);
+    //semantic end
     idlst();
     match(GROUPING, RPAR, ")");
     match(PUNCTUATION,SEMICOLON, ";");

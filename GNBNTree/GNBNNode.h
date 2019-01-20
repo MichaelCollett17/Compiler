@@ -6,13 +6,13 @@ struct gbnode{
     struct gbnode *right;
     struct gbnode *down;
     char *lex;
-    char *type;
+    int type;
     int borg;// 0 for blue 1 for green
     int array_size;//for aints or areals
 };
 
-void checkAddGreenNode(char *lex_in, char *type);
-void checkAddBlueNode();
+void checkAddGreenNode(char *lex_in, int type);
+void checkAddBlueNode(char *lex_in, int type);
 void procedureCall();
 int getType();
 void popStack();

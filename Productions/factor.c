@@ -10,30 +10,30 @@
 int factor(){
   struct resWord not = getTokAndAtt("not");
   if(tok.tokenType == ID){
-    idtype = getType(tok.lexeme);
+    int idtype = getType(tok.lexeme);
     match(ID, 0, "ID");
     int fac_prime_type = factor_prime(idtype);
     return fac_prime_type;
   }
   else if((tok.tokenType == INT) || (tok.tokenType == SREAL) || (tok.tokenType == LREAL) ){
-    int type = INT;
+    int type_ = INTEGER;
     if((tok.tokenType == SREAL) || (tok.tokenType == LREAL)){
-      type = REAL;
+      type_ = REAL;
     }
     matchNum();
-    return type;
+    return type_;
   }
   else if((tok.tokenType == GROUPING) && (tok.attribute == LPAR)){
     match(GROUPING,LPAR,"(");
-    int type = expression();
+    int type_ = expression();
     match(GROUPING,RPAR,")");
-    return type;
+    return type_;
   }
   else if((tok.tokenType == not.tokenResWord) && (tok.attribute == not.attributeResWord)){
     match(not.tokenResWord, not.attributeResWord, not.lexResWord);
-    int type = factor();
-    if(type == BOOL){
-      return type;
+    int type_ = factor();
+    if(type_ == BOOL){
+      return type_;
     }
     else{
       writeSemanticError("a boolean must follow *not*");
