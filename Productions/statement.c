@@ -13,9 +13,12 @@ void statement(){
   struct resWord if_ = getTokAndAtt("if");
   //id
   if(tok.tokenType == ID){
-    variable();
+    int var_type = variable();
     match(ASSIGNOP, 0, ":=");
-    expression();
+    int exp_type = expression();
+    if(!((var_type == ERR) || (exp_type == ERR) || (var_type == exp_type))){
+      writeSemanticError("incorrect types, variable and expression must be of the same type");
+    }
   }
   //call
   else if(tok.tokenType==call.tokenResWord){
@@ -29,7 +32,10 @@ void statement(){
   else if((tok.tokenType == while_.tokenResWord) && (tok.attribute == while_.attributeResWord)){
     struct resWord do_ = getTokAndAtt("do");
     match(while_.tokenResWord, while_.attributeResWord,while_.lexResWord);
-    expression();
+    int exp_type = expression();
+    if(exp_type != ERR && exp_type !=BOOL){
+      writeSemanticError("Expression type must be a boolean expression");
+    }
     match(do_.tokenResWord, do_.attributeResWord, do_.lexResWord);
     statement();
   }
@@ -37,7 +43,10 @@ void statement(){
   else if((tok.tokenType == if_.tokenResWord) && (tok.attribute == if_.attributeResWord)){
     struct resWord then = getTokAndAtt("then");
     match(if_.tokenResWord, if_.attributeResWord, if_.lexResWord);
-    expression();
+    int exp_type = expression();
+    if(exp_type != ERR && exp_type !=BOOL){
+      writeSemanticError("Expression type must be a boolean expression");
+    }
     match(then.tokenResWord,then.attributeResWord,then.lexResWord);
     statement();
     statement_prime();

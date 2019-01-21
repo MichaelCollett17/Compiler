@@ -5,12 +5,17 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void subprogram_head(){
   struct resWord procedure = getTokAndAtt("procedure");
   if(tok.tokenType == procedure.tokenResWord){
     match(procedure.tokenResWord, procedure.attributeResWord, procedure.lexResWord);
-    match(ID, 0, "ID");
+    char *idlex = match(ID, 0, "ID");
+    //semstart
+    checkAddGreenNode(idlex,PPNAME);
+    offset = 0;
+    //semend
     subprogram_head_prime();
   }
   else{

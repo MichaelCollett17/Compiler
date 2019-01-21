@@ -5,12 +5,14 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void parameter_list(){
   if(tok.tokenType==ID){
-    match(ID, 0, "ID");
+    char *idlex = match(ID, 0, "ID");
     match(TYPE, 0, ":");
-    type();
+    int type_ = type();
+    checkAddBlueNode(idlex,type_);
     parameter_list_prime();
   }
   else{

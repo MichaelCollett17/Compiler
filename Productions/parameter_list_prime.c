@@ -5,13 +5,15 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void parameter_list_prime(){
   if((tok.tokenType == PUNCTUATION) && (tok.attribute == SEMICOLON)){
     match(PUNCTUATION,SEMICOLON, ";");
-    match(ID, 0, "ID");
+    char *idlex = match(ID, 0, "ID");
     match(TYPE, 0, ":");
-    type();
+    int type_ = type();
+    checkAddBlueNode(idlex,type_);
     parameter_list_prime();
   }
   else if(tok.tokenType == GROUPING && tok.attribute == RPAR){
