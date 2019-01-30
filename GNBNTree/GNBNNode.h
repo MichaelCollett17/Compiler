@@ -13,8 +13,10 @@ struct gbnode{
 
 void checkAddGreenNode(char *lex_in, int type);
 void checkAddBlueNode(char *lex_in, int type);
-void procedureCall();
-int getType();
+void procedureCall(char* id_lex);
+void checkNoParams();
+void checkParam(int type);
+int getType(char* id_lex);
 void popStack();
 
 #endif

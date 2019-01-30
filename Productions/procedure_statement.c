@@ -5,12 +5,14 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void procedure_statement(){
   struct resWord call = getTokAndAtt("call");
   if(tok.tokenType==call.tokenResWord){
     match(call.tokenResWord, call.attributeResWord, call.lexResWord);
-    match(ID, 0 ,"ID");
+    char *idlex = match(ID, 0 ,"ID");
+    procedureCall(idlex);
     procedure_statement_prime();
   }
   else{

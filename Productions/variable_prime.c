@@ -5,15 +5,35 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
-void variable_prime(){
+int variable_prime(int i){
   if((tok.tokenType == GROUPING) && (tok.attribute == LBRACK)){
     match(GROUPING,LBRACK, "[");
-    expression();
+    int etype = expression();
     match(GROUPING,RBRACK, "]");
+    if((etype == ERR)||(i == ERR)){
+      return ERR;
+    }
+    else if(etype == INTEGER){
+      if(i == AINT){
+        return INTEGER;
+      }
+      else if(i == AREAL){
+        return REAL;
+      }
+      else{
+        writeSemanticError("ID is not of type array");
+        return ERR;
+      }
+    }
+    else{
+      writeSemanticError("expression inside brackets requires an integer");
+      return ERR;
+    }
   }
   else if(tok.tokenType == ASSIGNOP){
-    return;
+    return i;
   }
   else{
     writeSyntaxError("[, :=",tok.lexeme);

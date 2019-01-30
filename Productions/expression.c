@@ -6,7 +6,7 @@
 #include "../reservedWords.h"
 #include "../Parser.h"
 
-void expression(){
+int expression(){
   struct resWord not = getTokAndAtt("not");
   //id num ( not + -
   if((tok.tokenType==ID) || (tok.tokenType == INT) || (tok.tokenType == SREAL)
@@ -14,8 +14,9 @@ void expression(){
   || ((tok.tokenType == not.tokenResWord) && (tok.attribute == not.attributeResWord))
   || (tok.tokenType == ADDOP && tok.attribute == ADD)
   || (tok.tokenType == ADDOP && tok.attribute == SUB)){
-    simple_expression();
-    expression_prime();
+    int type_in = simple_expression();
+    int type_ = expression_prime(type_in);
+    return type_;
   }
   else{
     struct resWord do_ = getTokAndAtt("do");
@@ -34,5 +35,6 @@ void expression(){
     (!((tok.tokenType == else_.tokenResWord) && (tok.attribute == else_.attributeResWord)))){
       getToken();
     }
+    return ERR;
   }
 }

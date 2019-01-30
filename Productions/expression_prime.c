@@ -6,7 +6,7 @@
 #include "../reservedWords.h"
 #include "../Parser.h"
 
-void expression_prime(){
+int expression_prime(int i){
   struct resWord do_ = getTokAndAtt("do");
   struct resWord then = getTokAndAtt("then");
   struct resWord end = getTokAndAtt("end");
@@ -30,7 +30,17 @@ void expression_prime(){
     else{
       match(RELOP, GT, ">");
     }
-    simple_expression();
+    int se_type = simple_expression();
+    if((se_type == ERR) || (i == ERR)){
+      return ERR;
+    }
+    else if(((se_type == INTEGER) &&(i==INTEGER)) || ((se_type == REAL)&&(se_type == REAL))){
+      return BOOL;
+    }
+    else{
+      writeSemanticError("relational operations must be performed on the same type ie. int relop int or real relop real");
+      return ERR;
+    }
   }
   else if((((tok.tokenType == GROUPING) && (tok.attribute == RBRACK))) ||
   (((tok.tokenType == do_.tokenResWord) && (tok.attribute == do_.attributeResWord))) ||
@@ -40,7 +50,7 @@ void expression_prime(){
   (((tok.tokenType == PUNCTUATION) && (tok.attribute == SEMICOLON))) ||
   (((tok.tokenType == end.tokenResWord) && (tok.attribute == end.attributeResWord))) ||
   (((tok.tokenType == else_.tokenResWord) && (tok.attribute == else_.attributeResWord)))){
-    return;
+    return i;
   }
   else{
     writeSyntaxError("RELOP ] do then , ) ; end else", tok.lexeme);
@@ -55,5 +65,6 @@ void expression_prime(){
     (!((tok.tokenType == else_.tokenResWord) && (tok.attribute == else_.attributeResWord)))){
       getToken();
     }
+    return ERR;
   }
 }

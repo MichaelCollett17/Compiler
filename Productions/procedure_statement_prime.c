@@ -5,6 +5,7 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void procedure_statement_prime(){
   struct resWord else_ = getTokAndAtt("else");
@@ -17,6 +18,7 @@ void procedure_statement_prime(){
   else if(((tok.tokenType == end.tokenResWord) && (tok.attribute == end.attributeResWord))
   || ((tok.tokenType == else_.tokenResWord) && (tok.attribute == else_.attributeResWord))
   || ((tok.tokenType == PUNCTUATION) && (tok.attribute == SEMICOLON))){
+    checkNoParams();
     return;
   }
   else{

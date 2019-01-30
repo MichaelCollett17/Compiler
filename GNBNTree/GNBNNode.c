@@ -41,10 +41,18 @@ void procedureCall(){
 
 }
 
-int getType(){
+int getType(char* id_lex){
   return -200;
 }
 
 void popStack(){
+
+}
+
+void checkNoParams(){
+
+}
+
+void checkParam(int type){
 
 }

@@ -5,6 +5,7 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void expression_list(){
   struct resWord not = getTokAndAtt("not");
@@ -14,7 +15,8 @@ void expression_list(){
   || ((tok.tokenType == not.tokenResWord) && (tok.attribute == not.attributeResWord))
   || (tok.tokenType == ADDOP && tok.attribute == ADD)
   || (tok.tokenType == ADDOP && tok.attribute == SUB)){
-    expression();
+    int type_ = expression();
+    checkParam(type_);
     expression_list_prime();
   }
   else{

@@ -5,11 +5,14 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
-void variable(){
+int variable(){
   if(tok.tokenType == ID){
-    match(ID, 0, "ID");
-    variable_prime();
+    char * idlex = match(ID, 0, "ID");
+    int type_id = getType(idlex);
+    int type_ = variable_prime(type_id);
+    return type_;
   }
   else{
     writeSyntaxError("ID",tok.lexeme);
@@ -17,5 +20,6 @@ void variable(){
     && (tok.tokenType != ASSIGNOP)){
       getToken();
     }
+    return ERR;
   }
 }
