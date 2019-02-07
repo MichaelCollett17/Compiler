@@ -6,20 +6,22 @@
 #include "../reservedWords.h"
 #include "../Parser.h"
 
-void simple_expression(){
+int simple_expression(){
   struct resWord not = getTokAndAtt("not");
   //id num ( not + -
   if((tok.tokenType==ID) || (tok.tokenType == INT) || (tok.tokenType == SREAL)
   || (tok.tokenType == LREAL) || ((tok.tokenType == GROUPING) && (tok.attribute == LPAR))
   || ((tok.tokenType == not.tokenResWord) && (tok.attribute == not.attributeResWord))){
-    term();
-    simple_expression_prime();
+    int term_type = term();
+    int type_ = simple_expression_prime(term_type);
+    return type_;
   }
   else if((tok.tokenType == ADDOP && tok.attribute == ADD)
   || (tok.tokenType == ADDOP && tok.attribute == SUB)){
     sign();
-    term();
-    simple_expression_prime();
+    int term_type = term();
+    int type_ = simple_expression_prime(term_type);
+    return type_;
   }
   else{
     struct resWord do_ = getTokAndAtt("do");
@@ -39,5 +41,6 @@ void simple_expression(){
       ((tok.tokenType != RELOP))){
         getToken();
     }
+    return ERR;
   }
 }

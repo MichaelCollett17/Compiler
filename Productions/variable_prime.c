@@ -41,5 +41,6 @@ int variable_prime(int i){
     && (tok.tokenType != ASSIGNOP)){
       getToken();
     }
+    return ERR;
   }
 }

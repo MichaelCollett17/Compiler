@@ -60,5 +60,5 @@
 #define PGPARAM 208
 #define PPPARAM 209
 //offset value for memory checking
-extern int offset;
+int offset;
 #endif

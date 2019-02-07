@@ -1,7 +1,7 @@
 program fib(input, output);
 var n: integer; var p: integer;
 var q: real;
-var numsArray : array [13..12] of integer;
+var numsArray : array [9..20] of integer;
 
 procedure fib(a : integer; b : real; c : real);
   begin

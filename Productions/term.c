@@ -6,14 +6,15 @@
 #include "../reservedWords.h"
 #include "../Parser.h"
 
-void term(){
+int term(){
   struct resWord not = getTokAndAtt("not");
   //id num ( not
   if((tok.tokenType==ID) || (tok.tokenType == INT) || (tok.tokenType == SREAL)
   || (tok.tokenType == LREAL) || ((tok.tokenType == GROUPING) && (tok.attribute == LPAR))
   || ((tok.tokenType == not.tokenResWord) && (tok.attribute == not.attributeResWord))){
-    factor();
-    term_prime();
+    int tp_type = factor();
+    int type_ = term_prime(tp_type);
+    return type_;
   }
   else{
     writeSyntaxError("id num not (", tok.lexeme);
@@ -34,5 +35,6 @@ void term(){
       (tok.tokenType != ADDOP)){
         getToken();
     }
+    return ERR;
   }
 }
