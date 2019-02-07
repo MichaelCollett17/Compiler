@@ -9,7 +9,16 @@ struct gbnode *eye = NULL;
 struct gbnode *progHead = NULL;
 
 void checkAddBlueNode(char *lex_in, int type){
-
+  //have to add check for if same name exists
+  struct gbnode *link = (struct gbnode*) malloc(sizeof(struct gbnode));
+  link->borg = 0;
+  link->lex = lex_in;
+  link->type = type;
+  link->upleft = eye;
+  link->right = NULL;
+  link->down = NULL;
+  eye->right = link;
+  eye = link;
 }
 
 void checkAddGreenNode(char *lex_in, int type){
@@ -22,8 +31,11 @@ void checkAddGreenNode(char *lex_in, int type){
     progHead->right = NULL;
     progHead->down = NULL;
     gnpointer = progHead;
+    eye = progHead;
   }
   else{
+    //have to add check for if holder is necessary and add holder
+    //have to add check for if same name exists
     struct gbnode *link = (struct gbnode*) malloc(sizeof(struct gbnode));
     link->borg = 1;
     link->lex = lex_in;
@@ -31,9 +43,9 @@ void checkAddGreenNode(char *lex_in, int type){
     link->upleft = eye;
     link->right = NULL;
     link->down = NULL;
-    eye->down = link;//may need deref and may need to check if eye already has something down, but idk if he'll check that
-    gnpointer = link;//may need dereference
-    eye = link;//may need dereference
+    eye->down = link;
+    gnpointer = link;
+    eye = link;
   }
 }
 

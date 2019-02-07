@@ -39,6 +39,7 @@ int expression_prime(int i){
     }
     else{
       writeSemanticError("relational operations must be performed on the same type ie. int relop int or real relop real");
+      printf("%d, and %d\n", se_type,i);
       return ERR;
     }
   }
