@@ -19,7 +19,7 @@ program test (input, output);
      procedure proc3(n: integer; z: real);
        var e: integer;
 
-       procedure proc1(a: integer; z: array [1..3] of real);
+       procedure proc4(a: integer; z: array [1..3] of real);
          var x: integer;
          begin
            a:= e

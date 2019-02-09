@@ -78,6 +78,7 @@ int main()
   int blank = 1;
   while(blank == 1){
     if(buff[0]=='\n'){
+      printBuffer(buff,listFile,lineNum);
       lineNum++;
       eof = loadBuffer(buff,rfp);
     }

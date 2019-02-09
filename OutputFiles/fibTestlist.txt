@@ -1,3 +1,4 @@
+1.	
 2.	program test (input, output);
 3.	  var a : integer;
 4.	  var b : real;
@@ -18,9 +19,7 @@
 19.	     procedure proc3(n: integer; z: real);
 20.	       var e: integer;
 21.	
-22.	       procedure proc1(a: integer; z: array [1..3] of real);
--SEMANTIC ERROR-
-	: Cannot have duplicate procedure/program names
+22.	       procedure proc4(a: integer; z: array [1..3] of real);
 23.	         var x: integer;
 24.	         begin
 25.	           a:= e

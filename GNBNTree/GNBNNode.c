@@ -110,6 +110,16 @@ void popStack(){
   struct gbnode *curr = gnpointer;
   if(gnpointer->upleft != NULL){
     eye = gnpointer->upleft;
+    struct gbnode *hold = (struct gbnode*) malloc(sizeof(struct gbnode));
+    hold->borg = 0;
+    hold->lex = "HOLD_DONT_USE_AS_VAR_NAME";
+    hold->type = HOLDER;
+    hold->upleft = eye;
+    hold->right = NULL;
+    hold->down = NULL;
+    eye->right = hold;
+    printf("Blue node hold from: %s to: hold\n",eye->lex);
+    eye = hold;
   }
   else{
     printf("Damn it's null\n");
