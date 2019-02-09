@@ -46,7 +46,7 @@ void getToken(){
         getToken();//calls self because the previous call needed getToken still!
       }
       else{
-        printf("PARSE OVER 1\n");
+        printf("PARSE OVER\n");
         insertToken(EOF, "EOF", EOFTOKEN, 0);
         tok = getNextToken();
       }
@@ -67,7 +67,7 @@ void parse(){
 
 int main()
 {
-  rfp = fopen("./InputFiles/fib.pas", "r");
+  rfp = fopen("./InputFiles/shenoi_my_test.pas", "r");
   listFile = fopen("./OutputFiles/fibTestlist.txt", "w+");
   tokFile = fopen("./OutputFiles/fibTesttok.txt", "w+");
 
@@ -75,6 +75,16 @@ int main()
 
   eof = loadBuffer(buff,rfp);
   lineNum = 1;
+  int blank = 1;
+  while(blank == 1){
+    if(buff[0]=='\n'){
+      lineNum++;
+      eof = loadBuffer(buff,rfp);
+    }
+    else{
+      blank = 0;
+    }
+  }
   if(eof!=NULL){
     printBuffer(buff,listFile,lineNum);
     machines(buff, listFile, lineNum);

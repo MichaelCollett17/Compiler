@@ -9,6 +9,7 @@
 #include "../GNBNTree/GNBNNode.h"
 
 void program(){
+  printf("HERE 3 prog\n");
   struct resWord program = getTokAndAtt("program");
   if(tok.tokenType == program.tokenResWord) {
     match(program.tokenResWord, program.attributeResWord, program.lexResWord);
