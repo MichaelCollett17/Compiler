@@ -13,7 +13,7 @@ char* match(int tokenToMatch, int attributeToMatch, char *lexeme){
     return lex_out;
   }
   else if((tok.tokenType == tokenToMatch) && (tok.attribute == attributeToMatch) && (tok.tokenType == EOFTOKEN)){
-    printf("TODO: END OF PARSE!");
+    printf("TODO: END OF PARSE!\n");
     return NULL;
   }
   else{

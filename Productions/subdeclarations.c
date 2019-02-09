@@ -4,12 +4,14 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void subdeclarations(){
   struct resWord procedure = getTokAndAtt("procedure");
   if(tok.tokenType == procedure.tokenResWord){
     subdeclaration();
     match(PUNCTUATION,SEMICOLON, ";");
+    popStack();
     subdeclarations_prime();
   }
   else{

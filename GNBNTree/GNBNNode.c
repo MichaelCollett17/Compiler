@@ -2,7 +2,9 @@
 #include <stdbool.h>
 #include "./GNBNNode.h"
 #include <stdlib.h>
-
+#include "../tokens.h"
+#include <string.h>
+#include "../Parser.h"
 
 struct gbnode *gnpointer = NULL;
 struct gbnode *eye = NULL;
@@ -18,6 +20,7 @@ void checkAddBlueNode(char *lex_in, int type){
   link->right = NULL;
   link->down = NULL;
   eye->right = link;
+  printf("Blue node from: %s to: %s\n",eye->lex,link->lex);
   eye = link;
 }
 
@@ -54,11 +57,39 @@ void procedureCall(){
 }
 
 int getType(char* id_lex){
-  return -200;
+  struct gbnode tracer = *eye;
+  while(tracer.upleft != NULL){
+    if(strcmp(tracer.lex, id_lex)==0){
+      return tracer.type;
+    }
+    else{
+      tracer = *tracer.upleft;
+    }
+  }
+  writeSemanticError("Variable is not within scope or hasn't been declared");
+  return ERR;
 }
 
 void popStack(){
-
+  struct gbnode curr = *gnpointer;
+  printf("psst... is this it?\n");
+  printf("this gn called: %s\n",gnpointer->lex);
+  eye = gnpointer->upleft;
+  printf("this mah eye: %s\n", eye->lex);
+  int cond = 1;
+  while(cond == 1){
+    if(curr.upleft != NULL){
+      curr = *curr.upleft;
+      if(curr.borg == 1){//then its a green node
+        cond = 0;
+        gnpointer = &curr;
+        printf("FOUND A GREEN NODE CALLED: %s\n",gnpointer->lex);
+      }
+    }
+    else{
+      printf("Ruh Roh ran out of Green nodes!\n");
+    }
+  }
 }
 
 void checkNoParams(){

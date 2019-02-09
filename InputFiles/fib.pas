@@ -3,9 +3,9 @@ var n: integer; var p: integer;
 var q: real;
 var numsArray : array [9..20] of integer;
 
-procedure fib(a : integer; b : real; c : real);
+procedure fib1(a : integer; b : real; c : real);
   begin
-      if a <= 1 then fib := c
+      if a <= 1 then fibonno := c
       else call fib(a - 1, c, b + c)
   end;
 
