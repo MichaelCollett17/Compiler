@@ -12,7 +12,7 @@ void parameter_list(){
     char *idlex = match(ID, 0, "ID");
     match(TYPE, 0, ":");
     struct tw type_ = type();
-    checkAddBlueNode(idlex,type_.t);
+    checkAddBlueNodeParam(idlex,type_.t,PPPARAM);
     parameter_list_prime();
   }
   else{

@@ -11,6 +11,8 @@ struct gbnode *eye = NULL;
 struct gbnode *progHead = NULL;
 struct gbnode *greens_head = NULL;
 struct gbnode *greens_tail = NULL;
+struct gbnode *param_checker = NULL;
+
 void checkAddBlueNode(char *lex_in, int type){
   //have to add check for if same name exists
   struct gbnode checker = *eye;
@@ -31,6 +33,37 @@ void checkAddBlueNode(char *lex_in, int type){
     link->borg = 0;
     link->lex = lex_in;
     link->type = type;
+    link->type2 = -1;
+    link->upleft = eye;
+    link->right = NULL;
+    link->down = NULL;
+    eye->right = link;
+    printf("Blue node from: %s to: %s\n",eye->lex,link->lex);
+    eye = link;
+  }
+}
+
+void checkAddBlueNodeParam(char *lex_in, int type, int paramtype){
+  //have to add check for if same name exists
+  struct gbnode checker = *eye;
+  int cond = 1;
+  while((checker.upleft != NULL) && (cond==1) && (checker.borg==0)){
+    if(strcmp(checker.lex, lex_in)==0){
+      cond = 0;
+      writeSemanticError("Cannot have duplicate variable until and up to the nearest procedure/program");
+      return;
+    }
+    else{
+      checker = *checker.upleft;
+    }
+  }
+  //add node
+  if(cond==1){
+    struct gbnode *link = (struct gbnode*) malloc(sizeof(struct gbnode));
+    link->borg = 0;
+    link->lex = lex_in;
+    link->type = type;
+    link->type2 = paramtype;
     link->upleft = eye;
     link->right = NULL;
     link->down = NULL;
@@ -88,8 +121,25 @@ void checkAddGreenNode(char *lex_in, int type){
   }
 }
 
-void procedureCall(){
-
+void procedureCall(char *lex_in){
+  struct gbnode *call_checker = greens_head;
+  int condit = 0;
+  while((call_checker->nextGreen!= NULL) && (condit == 0)){
+    if(strcmp(call_checker->lex,lex_in)==0){
+      condit=1;
+    }
+    else{
+      call_checker = call_checker->nextGreen;
+    }
+  }
+  if((strcmp(call_checker->lex,lex_in)!=0) && (condit==0)){
+    writeSemanticError("Procedure not found");
+    param_checker = NULL;
+    return;
+  }
+  else{
+    param_checker = call_checker;
+  }
 }
 
 int getType(char* id_lex){
@@ -142,9 +192,45 @@ void popStack(){
 }
 
 void checkNoParams(){
-
+  if(param_checker == NULL){
+    return;
+  }
+  if(param_checker->right == NULL){
+    return;
+  }
+  else{
+    struct gbnode isparam = *param_checker->right;
+    if(isparam.type2 == PPPARAM){
+      writeSemanticError("Parameters of caller do not match procedure");
+    }
+  }
 }
 
 void checkParam(int type){
+  if(param_checker == NULL){
+    return;
+  }
+  //advance param_checker to the right and check it's a thing
+  if(param_checker->right == NULL){
+    writeSemanticError("Parameters of caller do not match procedure");
+  }
+  else{
+    param_checker = param_checker->right;
+    if((param_checker->type == type) && (param_checker->type2 == PPPARAM)){
+      return;
+    }
+    else{
+      writeSemanticError("Parameter type of caller do not match procedure parameter type");
+    }
+  }
+}
 
+void checkNoMoreParams(){
+  if(param_checker->right != NULL){
+    param_checker = param_checker->right;
+    if(param_checker->type2 == PPPARAM){
+      writeSemanticError("Parameters of caller do not match parameters of procedure");
+    }
+    param_checker = NULL;
+  }
 }

@@ -47,7 +47,9 @@
 43.	     end;
 44.	
 45.	begin
-46.	  call proc2(c[4], c[5]);
+46.	  call proc2(c[4], 2.2);
+-SEMANTIC ERROR-
+	: Parameter type of caller do not match procedure parameter type
 47.	  call proc2(c[4],2);
 48.	  if (a < 2) then a:= 1 else a := a + 2;
 -SEMANTIC ERROR-

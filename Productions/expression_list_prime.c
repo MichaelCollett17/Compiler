@@ -15,6 +15,7 @@ void expression_list_prime(){
     expression_list_prime();
   }
   else if(tok.tokenType==GROUPING && tok.attribute == RPAR){
+    checkNoMoreParams();
     return;
   }
   else{

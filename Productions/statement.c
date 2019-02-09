@@ -18,7 +18,7 @@ void statement(){
     int exp_type = expression();
     if(!((var_type == ERR) || (exp_type == ERR) || (var_type == exp_type))){
       writeSemanticError("incorrect types, variable and expression must be of the same type");
-      printf("%d, and %d", var_type,exp_type);
+      printf("%d, and %d\n", var_type,exp_type);
     }
   }
   //call
