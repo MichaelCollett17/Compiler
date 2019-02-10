@@ -18,8 +18,10 @@ void declarations_prime(){
     struct tw type_width = type();
     //semstart
     int type_ = type_width.t;
-    checkAddBlueNode(id_lex,type_);
+    //print the offset before updating
+    printAddress(id_lex,offset);
     offset = offset + type_width.w;
+    checkAddBlueNode(id_lex,type_,offset);
     //semend
     match(PUNCTUATION,SEMICOLON, ";");
     declarations_prime();

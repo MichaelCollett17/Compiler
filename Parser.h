@@ -8,5 +8,6 @@ struct tw{
 
 void writeSyntaxError(char *expecting, char *received);
 void writeSemanticError(char *error);
+int printAddress(char *var,int off);
 void getToken();
 #endif

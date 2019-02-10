@@ -11,7 +11,7 @@
 void idlst(){
   if(tok.tokenType == ID){
     char* id_lex = match(ID, 0, "ID");
-    checkAddBlueNode(id_lex, PGPARAM);
+    checkAddBlueNode(id_lex, PGPARAM, offset);
     idlst_prime();
   }
   else{

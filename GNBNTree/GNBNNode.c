@@ -13,7 +13,7 @@ struct gbnode *greens_head = NULL;
 struct gbnode *greens_tail = NULL;
 struct gbnode *param_checker = NULL;
 
-void checkAddBlueNode(char *lex_in, int type){
+void checkAddBlueNode(char *lex_in, int type, int offset_param){
   //have to add check for if same name exists
   struct gbnode checker = *eye;
   int cond = 1;
@@ -33,6 +33,7 @@ void checkAddBlueNode(char *lex_in, int type){
     link->borg = 0;
     link->lex = lex_in;
     link->type = type;
+    link->offset_ = offset_param;
     link->type2 = -1;
     link->upleft = eye;
     link->right = NULL;
@@ -64,6 +65,7 @@ void checkAddBlueNodeParam(char *lex_in, int type, int paramtype){
     link->lex = lex_in;
     link->type = type;
     link->type2 = paramtype;
+    link->offset_ = 0;
     link->upleft = eye;
     link->right = NULL;
     link->down = NULL;
@@ -79,6 +81,7 @@ void checkAddGreenNode(char *lex_in, int type){
     progHead->borg = 1;
     progHead->lex = lex_in;
     progHead->type = type;
+    progHead->offset_ = 0;
     progHead->upleft = NULL;
     progHead->right = NULL;
     progHead->down = NULL;
@@ -109,6 +112,7 @@ void checkAddGreenNode(char *lex_in, int type){
     link->borg = 1;
     link->lex = lex_in;
     link->type = type;
+    link->offset_=0;
     link->upleft = eye;
     link->right = NULL;
     link->down = NULL;
@@ -233,4 +237,8 @@ void checkNoMoreParams(){
     }
     param_checker = NULL;
   }
+}
+
+int getOffset(){
+  return eye->offset_;
 }

@@ -12,6 +12,7 @@ void subdeclarations(){
     subdeclaration();
     match(PUNCTUATION,SEMICOLON, ";");
     popStack();
+    offset = getOffset();
     subdeclarations_prime();
   }
   else{

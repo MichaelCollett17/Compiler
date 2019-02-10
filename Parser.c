@@ -15,6 +15,7 @@ FILE *listFile;
 char *eof;
 FILE *rfp;
 FILE *tokFile;
+FILE *memoryFile;
 char buff[72];
 int lineNum;
 
@@ -58,6 +59,11 @@ void getToken(){
   }
 }
 
+int printAddress(char *var,int off){
+  printf("%s\t\t\t%d\n", var,off);
+  return fprintf(memoryFile, "%s\t\t\t%d\n", var,off);
+}
+
 void parse(){
   getToken();
   program();
@@ -70,6 +76,8 @@ int main()
   rfp = fopen("./InputFiles/shenoi_my_test.pas", "r");
   listFile = fopen("./OutputFiles/fibTestlist.txt", "w+");
   tokFile = fopen("./OutputFiles/fibTesttok.txt", "w+");
+  memoryFile = fopen("./OutputFiles/memoryAddrs.txt", "w+");
+  fprintf(memoryFile, "Variable\t\t\tOffset\n");
 
   loadReservedWords();
 

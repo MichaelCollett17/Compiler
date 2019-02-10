@@ -11,7 +11,7 @@ void idlst_prime(){
   if((tok.tokenType == PUNCTUATION) && (tok.attribute == COMMA)){
     match(PUNCTUATION, COMMA, ",");
     char *id_lex = match(ID, 0, "ID");
-    checkAddBlueNode(id_lex, PGPARAM);
+    checkAddBlueNode(id_lex, PGPARAM, offset);
     idlst_prime();
   }
   else if((tok.tokenType == GROUPING)&&(tok.attribute == RPAR)){

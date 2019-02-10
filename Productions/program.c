@@ -15,7 +15,7 @@ void program(){
     char *idlex = match(ID, 0, "ID");
     match(GROUPING, LPAR, "(");
     //semantic start
-    offset = 0;//may need to be int offset!
+    offset = 0;
     checkAddGreenNode(idlex, PGNAME);
     //semantic end
     idlst();

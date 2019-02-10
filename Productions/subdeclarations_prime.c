@@ -13,6 +13,7 @@ void subdeclarations_prime(){
     subdeclaration();
     match(PUNCTUATION,SEMICOLON, ";");
     popStack();
+    offset = getOffset();
     subdeclarations_prime();
   }
   else if((tok.tokenType == begin.tokenResWord)&&(tok.attribute == begin.attributeResWord)){

@@ -3,6 +3,7 @@ program test (input, output);
   var a : integer;
   var b : real;
   var c : array [1..2] of integer;
+  var dumb : integer;
 
   procedure proc1(x:integer; y:real;
                   z:array [1..2] of integer; q: real);
