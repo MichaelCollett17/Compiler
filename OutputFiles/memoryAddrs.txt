@@ -2,7 +2,6 @@ Variable			Offset
 a			0
 b			4
 c			12
-dumb			20
 d			0
 e			0
 e			0
