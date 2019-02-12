@@ -19,6 +19,7 @@ int factor_prime(int i){
     //Semantics
     if(etype == INTEGER){
       if(i == AINT){
+        printf("Returning Integer here\n");
         return INTEGER;
       }
       else if(i == AREAL){

@@ -13,7 +13,9 @@ int term(){
   || (tok.tokenType == LREAL) || ((tok.tokenType == GROUPING) && (tok.attribute == LPAR))
   || ((tok.tokenType == not.tokenResWord) && (tok.attribute == not.attributeResWord))){
     int tp_type = factor();
+    printf("factor type: %d\n",tp_type);
     int type_ = term_prime(tp_type);
+    printf("termprime type: %d\n",type_);
     return type_;
   }
   else{

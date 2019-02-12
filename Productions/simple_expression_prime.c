@@ -42,8 +42,11 @@ int simple_expression_prime(int i){
         }
       }
       else{//op is either sub or add
-        if(((term_type == INTEGER) && (i == INTEGER))||((term_type == REAL) && (i == REAL))){
-          se_type = BOOL;
+        if((term_type == INTEGER) && (i == INTEGER)){
+          se_type = INTEGER;
+        }
+        else if((term_type == REAL) && (i == REAL)){
+          se_type = REAL;
         }
         else{
           writeSemanticError("addition and subtraction types must match and be either int or real");

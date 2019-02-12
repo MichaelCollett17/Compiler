@@ -14,6 +14,8 @@ struct gbnode{
     int array_size;//for aints or areals
 };
 
+void printStatus();
+void printUpLeftChain();
 void checkAddGreenNode(char *lex_in, int type);
 void checkAddBlueNode(char *lex_in, int type, int offset_param);
 void checkAddBlueNodeParam(char *lex_in, int type, int paramtype);

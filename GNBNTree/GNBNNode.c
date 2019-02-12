@@ -12,6 +12,7 @@ struct gbnode *progHead = NULL;
 struct gbnode *greens_head = NULL;
 struct gbnode *greens_tail = NULL;
 struct gbnode *param_checker = NULL;
+int proc_non_existent = 0;
 
 void checkAddBlueNode(char *lex_in, int type, int offset_param){
   //have to add check for if same name exists
@@ -138,6 +139,7 @@ void procedureCall(char *lex_in){
   }
   if((strcmp(call_checker->lex,lex_in)!=0) && (condit==0)){
     writeSemanticError("Procedure not found");
+    proc_non_existent = 1;
     param_checker = NULL;
     return;
   }
@@ -172,7 +174,7 @@ void popStack(){
     hold->right = NULL;
     hold->down = NULL;
     eye->right = hold;
-    printf("Blue node hold from: %s to: hold\n",eye->lex);
+    printf("Blue node from: %s to: hold\n",eye->lex);
     eye = hold;
   }
   else{
@@ -196,6 +198,10 @@ void popStack(){
 }
 
 void checkNoParams(){
+  if(proc_non_existent == 1){//no proc found
+    proc_non_existent = 0;
+    return;
+  }
   if(param_checker == NULL){
     return;
   }
@@ -210,8 +216,26 @@ void checkNoParams(){
   }
 }
 
+void printUpLeftChain(){
+  struct gbnode tracer = *eye;
+  int count = 1;
+  while(tracer.upleft != NULL){
+    printf("%d. lex: %s\ttype: %d\n",count,tracer.lex,tracer.type);
+    tracer = *tracer.upleft;
+    count++;
+  }
+}
+
+void printStatus(){
+  printf("eye: %s\ngreen node: %s\nupleft: %s\n", eye->lex,gnpointer->lex,eye->upleft->lex);
+}
+
 void checkParam(int type){
-  if(param_checker == NULL){
+  if(proc_non_existent == 1){//no proc found
+    return;
+  }
+  if(param_checker == NULL){//why wasn't there a return before?
+    writeSemanticError("Parameters of caller do not match parameters of procedure");
     return;
   }
   //advance param_checker to the right and check it's a thing
@@ -230,6 +254,10 @@ void checkParam(int type){
 }
 
 void checkNoMoreParams(){
+  if(proc_non_existent == 1){//no proc found
+    proc_non_existent = 0;
+    return;
+  }
   if(param_checker->right != NULL){
     param_checker = param_checker->right;
     if(param_checker->type2 == PPPARAM){

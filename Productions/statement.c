@@ -5,6 +5,7 @@
 #include "./productions.h"
 #include "../reservedWords.h"
 #include "../Parser.h"
+#include "../GNBNTree/GNBNNode.h"
 
 void statement(){
   struct resWord call = getTokAndAtt("call");
@@ -18,6 +19,7 @@ void statement(){
     int exp_type = expression();
     if(!((var_type == ERR) || (exp_type == ERR) || (var_type == exp_type))){
       writeSemanticError("incorrect types, variable and expression must be of the same type");
+      printUpLeftChain();
       printf("%d, and %d\n", var_type,exp_type);
     }
   }
