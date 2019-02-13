@@ -17,7 +17,7 @@ struct gbnode{
 void printStatus();
 void printUpLeftChain();
 void checkAddGreenNode(char *lex_in, int type);
-void checkAddBlueNode(char *lex_in, int type, int offset_param);
+void checkAddBlueNode(char *lex_in, int type, int offset_param, int print);
 void checkAddBlueNodeParam(char *lex_in, int type, int paramtype);
 void procedureCall(char* id_lex);
 void checkNoParams();

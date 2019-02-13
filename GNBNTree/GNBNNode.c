@@ -14,7 +14,7 @@ struct gbnode *greens_tail = NULL;
 struct gbnode *param_checker = NULL;
 int proc_non_existent = 0;
 
-void checkAddBlueNode(char *lex_in, int type, int offset_param){
+void checkAddBlueNode(char *lex_in, int type, int offset_param, int print){
   //have to add check for if same name exists
   struct gbnode checker = *eye;
   int cond = 1;
@@ -30,6 +30,9 @@ void checkAddBlueNode(char *lex_in, int type, int offset_param){
   }
   //add node
   if(cond==1){
+    if(print==1){
+      printAddress(lex_in,offset_param);
+    }
     struct gbnode *link = (struct gbnode*) malloc(sizeof(struct gbnode));
     link->borg = 0;
     link->lex = lex_in;
@@ -127,25 +130,41 @@ void checkAddGreenNode(char *lex_in, int type){
 }
 
 void procedureCall(char *lex_in){
-  struct gbnode *call_checker = greens_head;
-  int condit = 0;
-  while((call_checker->nextGreen!= NULL) && (condit == 0)){
-    if(strcmp(call_checker->lex,lex_in)==0){
-      condit=1;
+  // struct gbnode *call_checker = greens_head;
+  // int condit = 0;
+  // while((call_checker->nextGreen!= NULL) && (condit == 0)){
+  //   if(strcmp(call_checker->lex,lex_in)==0){
+  //     condit=1;
+  //   }
+  //   else{
+  //     call_checker = call_checker->nextGreen;
+  //   }
+  // }
+  // if((strcmp(call_checker->lex,lex_in)!=0) && (condit==0)){
+  //   writeSemanticError("Procedure not found");
+  //   proc_non_existent = 1;
+  //   param_checker = NULL;
+  //   return;
+  // }
+  // else{
+  //   param_checker = call_checker;
+  // }
+  struct gbnode *call_checker = eye;
+  while(call_checker->upleft != NULL){
+    if((call_checker->borg==1) && (strcmp(call_checker->lex,lex_in)==0)){
+      param_checker = call_checker;
+      return;
     }
-    else{
-      call_checker = call_checker->nextGreen;
+    call_checker = call_checker->upleft;
+    if((call_checker->down!=NULL)&&(call_checker->down->borg==1) && (strcmp(call_checker->down->lex,lex_in)==0)){
+      param_checker = call_checker->down;
+      return;
     }
   }
-  if((strcmp(call_checker->lex,lex_in)!=0) && (condit==0)){
-    writeSemanticError("Procedure not found");
-    proc_non_existent = 1;
-    param_checker = NULL;
-    return;
-  }
-  else{
-    param_checker = call_checker;
-  }
+  writeSemanticError("Procedure not found");
+  proc_non_existent = 1;
+  param_checker = NULL;
+  return;
 }
 
 int getType(char* id_lex){
@@ -178,7 +197,7 @@ void popStack(){
     eye = hold;
   }
   else{
-    printf("Damn it's null\n");
+    printf("Error: null shouldn't happen\n");
   }
   int cond = 1;
   while(cond == 1){
@@ -192,7 +211,7 @@ void popStack(){
       }
     }
     else{
-      printf("Ruh Roh ran out of Green nodes!\n");
+      printf("Ran out of Green nodes!\n");
     }
   }
 }

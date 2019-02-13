@@ -3,9 +3,7 @@
 3.	  var a : integer;
 4.	  var b : real;
 5.	  var c : array [1..2] of integer;
-6.	  var b : real;
--SEMANTIC ERROR-
-	: Cannot have duplicate variable until and up to the nearest procedure/program
+6.	  var d : real;
 7.	
 8.	  procedure proc1(x:integer; y:real;
 9.	                  z:array [1..2] of integer; q: real);
@@ -18,13 +16,9 @@
 16.	
 17.	   procedure proc2(x: integer; y: integer);
 18.	     var e: real;
-19.	       var e: integer;
--SEMANTIC ERROR-
-	: Cannot have duplicate variable until and up to the nearest procedure/program
+19.	       var f: integer;
 20.	
-21.	     procedure proc2(n: integer; z: real);
--SEMANTIC ERROR-
-	: Cannot have duplicate procedure/program names
+21.	     procedure proc3(n: integer; z: real);
 22.	       var e: integer;
 23.	
 24.	       procedure proc4(a: integer; z: array [1..3] of real);
@@ -41,8 +35,6 @@
 35.	     begin
 36.	       call proc1(x, e, c, b);
 37.	       call proc3(c[1], e);
--SEMANTIC ERROR-
-	: Procedure not found
 38.	       e := e + 4.44;
 39.	       a:= (a mod y) div x;
 40.	       while ((a >= 4) and ((b <= e)
@@ -53,8 +45,47 @@
 45.	     end;
 46.	
 47.	begin
-48.	  call proc2(c[4], c[5]);
-49.	  call proc2(c[4],2);
-50.	  if (a < 2) then a:= 1 else a := a + 2;
-51.	  if (b > 4.2) then a := c[a]
-52.	end.
+48.	  call proc2(c[4], c[5,5]);
+-SYNTAX ERROR-
+	Expecting one of: ]
+	Received: ,
+-SYNTAX ERROR-
+	Expecting one of: mulop addop relop do then ] , ) ; end else
+	Received: 5
+-SEMANTIC ERROR-
+	: Parameter type of caller do not match procedure parameter type
+-SYNTAX ERROR-
+	Expecting one of: , )
+	Received: ]
+49.	  call proc2(c[4], c[5],5);
+-SEMANTIC ERROR-
+	: Parameter type of caller do not match procedure parameter type
+50.	  call proc2(c[4], c);
+-SEMANTIC ERROR-
+	: Parameter type of caller do not match procedure parameter type
+51.	  call proc2(c[4]);
+-SEMANTIC ERROR-
+	: Parameters of caller do not match parameters of procedure
+52.	  call proc2();
+-SYNTAX ERROR-
+	Expecting one of: id num ( not + -
+	Received: )
+53.	  call proc2;
+-SEMANTIC ERROR-
+	: Parameters of caller do not match procedure
+54.	  call proc3(c[4], c[5]);
+-SEMANTIC ERROR-
+	: Procedure not found
+55.	  call proc4(c[4], c[5]);
+-SEMANTIC ERROR-
+	: Procedure not found
+56.	  call proc5(c[4], c[5]);
+-SEMANTIC ERROR-
+	: Procedure not found
+57.	  call proc6(c[4], c[5]);
+-SEMANTIC ERROR-
+	: Procedure not found
+58.	  call proc2(c[4],2);
+59.	  if (a < 2) then a:= 1 else a := a + 2;
+60.	  if (b > 4.2) then a := c[a]
+61.	end.
