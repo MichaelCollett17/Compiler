@@ -35,57 +35,22 @@
 35.	     begin
 36.	       call proc1(x, e, c, b);
 37.	       call proc3(c[1], e);
-38.	       e := e + 4.44;
-39.	       a:= (a mod y) div x;
-40.	       while ((a >= 4) and ((b <= e)
+38.	       e := e + 4;
+-SEMANTIC ERROR-
+	: addition and subtraction types must match and be either int or real
+39.	       a:= (a mod 4.4) div 4.4;
+-SEMANTIC ERROR-
+	: Modulus operator only works on integers
+40.	       while ((a >= 4.4) and ((b <= e)
 41.	                       or (not (a = c[a])))) do
 42.	         begin
-43.	           a:= c[a] + 1
+43.	           a:= c + 1
 44.	         end
+-SEMANTIC ERROR-
+	: addition and subtraction types must match and be either int or real
 45.	     end;
 46.	
 47.	begin
-48.	  call proc2(c[4], c[5,5]);
--SYNTAX ERROR-
-	Expecting one of: ]
-	Received: ,
--SYNTAX ERROR-
-	Expecting one of: mulop addop relop do then ] , ) ; end else
-	Received: 5
--SEMANTIC ERROR-
-	: Parameter type of caller do not match procedure parameter type
--SYNTAX ERROR-
-	Expecting one of: , )
-	Received: ]
-49.	  call proc2(c[4], c[5],5);
--SEMANTIC ERROR-
-	: Parameter type of caller do not match procedure parameter type
-50.	  call proc2(c[4], c);
--SEMANTIC ERROR-
-	: Parameter type of caller do not match procedure parameter type
-51.	  call proc2(c[4]);
--SEMANTIC ERROR-
-	: Parameters of caller do not match parameters of procedure
-52.	  call proc2();
--SYNTAX ERROR-
-	Expecting one of: id num ( not + -
-	Received: )
-53.	  call proc2;
--SEMANTIC ERROR-
-	: Parameters of caller do not match procedure
-54.	  call proc3(c[4], c[5]);
--SEMANTIC ERROR-
-	: Procedure not found
-55.	  call proc4(c[4], c[5]);
--SEMANTIC ERROR-
-	: Procedure not found
-56.	  call proc5(c[4], c[5]);
--SEMANTIC ERROR-
-	: Procedure not found
-57.	  call proc6(c[4], c[5]);
--SEMANTIC ERROR-
-	: Procedure not found
-58.	  call proc2(c[4],2);
-59.	  if (a < 2) then a:= 1 else a := a + 2;
-60.	  if (b > 4.2) then a := c[a]
-61.	end.
+48.	  if (a < 2) then a:= 1 else a := a + 2;
+49.	  if (b > 4.2) then a := c[a]
+50.	end.
